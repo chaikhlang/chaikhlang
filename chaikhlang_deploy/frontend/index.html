@@ -700,7 +700,7 @@ textarea.form-input { font-family: 'Sarabun', sans-serif; }
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div class="form-group">
           <label class="form-label">🎮 เกม *</label>
-          <select class="form-input" id="sell-game">
+          <select class="form-input" id="sell-game" onchange="toggleCustomGame(this)">
             <option value="">เลือกเกม...</option>
             <option>Ragnarok Origin</option>
             <option>Ragnarok M</option>
@@ -713,8 +713,10 @@ textarea.form-input { font-family: 'Sarabun', sans-serif; }
             <option>Free Fire</option>
             <option>Mobile Legends</option>
             <option>Arena of Valor</option>
-            <option>อื่นๆ</option>
+            <option value="other">✏️ อื่นๆ (ระบุเอง)</option>
           </select>
+          <!-- ช่องกรอกชื่อเกมเอง (ซ่อนไว้ก่อน) -->
+          <input class="form-input" id="sell-game-custom" placeholder="พิมพ์ชื่อเกม..." style="display:none;margin-top:8px" oninput="updatePreview()">
         </div>
         <div class="form-group">
           <label class="form-label">📦 ประเภท *</label>
@@ -757,6 +759,46 @@ textarea.form-input { font-family: 'Sarabun', sans-serif; }
       <div class="form-group">
         <label class="form-label">📄 รายละเอียดสินค้า *</label>
         <textarea class="form-input" id="sell-desc" rows="4" placeholder="อธิบายสินค้าให้ละเอียด เช่น stats, rank, สกิน, เงื่อนไขการส่ง..." style="resize:vertical;min-height:100px"></textarea>
+      </div>
+
+      <!-- รูปภาพสินค้า -->
+      <div class="form-group">
+        <label class="form-label">🖼️ รูปภาพสินค้า (ไม่บังคับ)</label>
+        <div id="img-drop-zone" style="border:2px dashed var(--lavender2);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:#F7F3FF" onclick="document.getElementById('sell-img-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--coral)'" ondragleave="this.style.borderColor='var(--lavender2)'" ondrop="handleImgDrop(event)">
+          <div id="img-preview-wrap" style="display:none;margin-bottom:10px">
+            <img id="img-preview" style="max-height:160px;max-width:100%;border-radius:12px;object-fit:cover">
+          </div>
+          <div id="img-placeholder">
+            <div style="font-size:32px;margin-bottom:6px">📷</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text2)">คลิกหรือลากรูปมาวางที่นี่</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px">PNG, JPG ขนาดไม่เกิน 2MB</div>
+          </div>
+        </div>
+        <input type="file" id="sell-img-input" accept="image/*" style="display:none" onchange="handleImgSelect(this)">
+        <button type="button" id="img-remove-btn" style="display:none;margin-top:6px;font-size:12px;color:var(--coral2);background:none;border:none;cursor:pointer;font-family:inherit" onclick="removeImg()">✕ ลบรูป</button>
+      </div>
+
+      <!-- ข้อมูล ID (แสดงในหน้ารายละเอียด) -->
+      <div class="form-group">
+        <label class="form-label">🏷️ ข้อมูลเพิ่มเติมที่แสดงในหน้าสินค้า (ไม่บังคับ)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600">Rank / Level</div>
+            <input class="form-input" id="sell-rank" placeholder="เช่น Diamond III, Lv.99">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600">จำนวน Hero/ตัวละคร</div>
+            <input class="form-input" id="sell-heroes" placeholder="เช่น 38 Hero">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600">สกิน / Skin</div>
+            <input class="form-input" id="sell-skins" placeholder="เช่น 45 ชิ้น">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600">ข้อมูลพิเศษ</div>
+            <input class="form-input" id="sell-extra" placeholder="เช่น ไม่เคย ban, card ครบ">
+          </div>
+        </div>
       </div>
 
       <!-- Preview card -->
@@ -978,12 +1020,22 @@ async function openDetail(id) {
     const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
     const avC = AV_COLORS[(l.seller_username||'').charCodeAt(0) % 4 || 0];
     const av = (l.seller_avatar || l.seller_username || '??').slice(0,2).toUpperCase();
+    const rawDesc = l.description || '';
+    const imgMatch = rawDesc.match(/\[IMG\]([\s\S]*?)\[\/IMG\]/);
+    const imgSrc = imgMatch ? imgMatch[1] : null;
+    const cleanDesc = rawDesc.replace(/\[IMG\][\s\S]*?\[\/IMG\]/g, '').trim();
+    const descLines = cleanDesc.split('\n');
+    const mainDesc = descLines[0];
+    const extraLines = descLines.slice(1).filter(l => l.trim()).join('<br>');
+
     document.getElementById('d-top-deco').style.background = bg;
     document.getElementById('d-emoji').textContent = l.image_emoji||'🎮';
     document.getElementById('d-body').innerHTML = `
       <div class="modal-title">${l.title}</div>
       <div class="modal-game-tag"><span class="game-tag">🎮 ${l.game}</span></div>
-      <p class="modal-desc">${l.description||''}</p>
+      ${imgSrc ? `<img src="${imgSrc}" style="width:100%;max-height:200px;object-fit:cover;border-radius:14px;margin-bottom:12px">` : ''}
+      <p class="modal-desc">${mainDesc}</p>
+      ${extraLines ? `<div style="background:#F7F3FF;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text2);line-height:1.8">${extraLines}</div>` : ''}
       <div class="info-grid">
         <div class="info-cell"><div class="info-cell-label">🖥️ เซิร์ฟเวอร์</div><div class="info-cell-val">${l.server||'TH'}</div></div>
         <div class="info-cell"><div class="info-cell-label">📦 ประเภท</div><div class="info-cell-val">${l.category==='account'?'บัญชีเกม':l.category==='item'?'ไอเทม':'เงินในเกม'}</div></div>
@@ -1101,6 +1153,53 @@ function renderSellPage() {
   }
 }
 
+function toggleCustomGame(sel) {
+  const custom = document.getElementById('sell-game-custom');
+  if (sel.value === 'other') {
+    custom.style.display = 'block';
+    custom.focus();
+  } else {
+    custom.style.display = 'none';
+    custom.value = '';
+  }
+  updatePreview();
+}
+
+let sellImgBase64 = null;
+function handleImgSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { toast('รูปภาพต้องมีขนาดไม่เกิน 2MB', 'e'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    sellImgBase64 = e.target.result;
+    document.getElementById('img-preview').src = sellImgBase64;
+    document.getElementById('img-preview-wrap').style.display = 'block';
+    document.getElementById('img-placeholder').style.display = 'none';
+    document.getElementById('img-remove-btn').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+}
+function handleImgDrop(ev) {
+  ev.preventDefault();
+  document.getElementById('img-drop-zone').style.borderColor = 'var(--lavender2)';
+  const file = ev.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    const input = document.getElementById('sell-img-input');
+    input.files = dt.files;
+    handleImgSelect(input);
+  }
+}
+function removeImg() {
+  sellImgBase64 = null;
+  document.getElementById('sell-img-input').value = '';
+  document.getElementById('img-preview-wrap').style.display = 'none';
+  document.getElementById('img-placeholder').style.display = 'block';
+  document.getElementById('img-remove-btn').style.display = 'none';
+}
+
 function pickEmoji(el, emoji) {
   document.querySelectorAll('.emoji-pick').forEach(b => b.classList.remove('active-emoji'));
   el.classList.add('active-emoji');
@@ -1110,7 +1209,10 @@ function pickEmoji(el, emoji) {
 
 function updatePreview() {
   const title = document.getElementById('sell-title').value || 'ชื่อสินค้าของคุณ';
-  const game = document.getElementById('sell-game').value || 'เกม';
+  const gameEl = document.getElementById('sell-game');
+  const game = gameEl.value === 'other'
+    ? (document.getElementById('sell-game-custom').value || 'เกมอื่นๆ')
+    : (gameEl.value || 'เกม');
   const server = document.getElementById('sell-server').value || 'เซิร์ฟเวอร์';
   const price = document.getElementById('sell-price').value || '0';
   document.getElementById('preview-title').textContent = title;
@@ -1120,7 +1222,10 @@ function updatePreview() {
 
 async function doCreateListing() {
   const title = document.getElementById('sell-title').value.trim();
-  const game = document.getElementById('sell-game').value;
+  const gameEl = document.getElementById('sell-game');
+  const game = gameEl.value === 'other'
+    ? document.getElementById('sell-game-custom').value.trim()
+    : gameEl.value;
   const category = document.getElementById('sell-category').value;
   const price = document.getElementById('sell-price').value;
   const stock = document.getElementById('sell-stock').value;
@@ -1128,6 +1233,10 @@ async function doCreateListing() {
   const delivery = document.getElementById('sell-delivery').value;
   const desc = document.getElementById('sell-desc').value.trim();
   const emoji = document.getElementById('sell-emoji').value;
+  const rank = document.getElementById('sell-rank').value.trim();
+  const heroes = document.getElementById('sell-heroes').value.trim();
+  const skins = document.getElementById('sell-skins').value.trim();
+  const extra = document.getElementById('sell-extra').value.trim();
   const errEl = document.getElementById('sell-err');
   const successEl = document.getElementById('sell-success');
 
@@ -1135,9 +1244,18 @@ async function doCreateListing() {
   successEl.style.display = 'none';
 
   if (!title) { errEl.textContent = 'กรุณากรอกชื่อสินค้า'; return; }
-  if (!game) { errEl.textContent = 'กรุณาเลือกเกม'; return; }
+  if (!game) { errEl.textContent = 'กรุณาเลือกหรือกรอกชื่อเกม'; return; }
   if (!price || Number(price) < 1) { errEl.textContent = 'กรุณากรอกราคา'; return; }
   if (!desc) { errEl.textContent = 'กรุณากรอกรายละเอียดสินค้า'; return; }
+
+  let fullDesc = desc;
+  const extras = [];
+  if (rank) extras.push('🏆 Rank/Level: ' + rank);
+  if (heroes) extras.push('🦸 Hero/ตัวละคร: ' + heroes);
+  if (skins) extras.push('🎨 Skin: ' + skins);
+  if (extra) extras.push('✨ ' + extra);
+  if (extras.length) fullDesc += '\n\n' + extras.join('\n');
+  if (sellImgBase64) fullDesc += '\n[IMG]' + sellImgBase64 + '[/IMG]';
 
   try {
     await apiCall('/listings', {
@@ -1145,21 +1263,21 @@ async function doCreateListing() {
       body: JSON.stringify({
         title, game, category, price: Number(price),
         stock: Number(stock) || 1, server, delivery_method: delivery,
-        description: desc, image_emoji: emoji
+        description: fullDesc, image_emoji: emoji
       })
     });
     successEl.style.display = 'block';
     toast('🎉 ลงขายสำเร็จแล้ว! สินค้าปรากฏในตลาดแล้ว', 's');
-    // reset form
-    document.getElementById('sell-title').value = '';
-    document.getElementById('sell-price').value = '';
+    ['sell-title','sell-price','sell-server','sell-desc','sell-rank','sell-heroes','sell-skins','sell-extra'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('sell-stock').value = '1';
-    document.getElementById('sell-server').value = '';
-    document.getElementById('sell-desc').value = '';
     document.getElementById('sell-game').value = '';
+    document.getElementById('sell-game-custom').style.display = 'none';
+    document.getElementById('sell-game-custom').value = '';
+    removeImg();
     document.getElementById('preview-title').textContent = 'ชื่อสินค้าของคุณ';
     document.getElementById('preview-price').textContent = '฿0';
     document.getElementById('preview-game').textContent = 'เกม | เซิร์ฟเวอร์';
+    setTimeout(() => loadListings(), 1000);
   } catch(e) {
     errEl.textContent = 'เกิดข้อผิดพลาด: ' + e.message;
   }
