@@ -7,9 +7,9 @@ const app = express();
 // Trust proxy (required for Render.com)
 app.set('trust proxy', 1);
 
-// CORS — allow frontend on Vercel + localhost dev
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://chaikhlang.vercel.app',
   'http://localhost:3000',
   'http://localhost:5500',
   'http://127.0.0.1:5500',
