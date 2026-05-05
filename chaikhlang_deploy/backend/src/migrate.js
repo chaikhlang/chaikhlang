@@ -108,7 +108,6 @@ async function migrate() {
 
   console.log('✅ Seed data inserted!');
   console.log('🎉 Migration complete! Ready to launch.');
-  process.exit(0);
 }
 
 migrate().catch(err => {
