@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: chaikhlang-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false        # กรอกใน Render Dashboard
+      - key: JWT_SECRET
+        generateValue: true  # Render สร้างให้อัตโนมัติ
+      - key: FRONTEND_URL
+        value: https://chaikhlang.vercel.app  # เปลี่ยนเป็น URL จริง

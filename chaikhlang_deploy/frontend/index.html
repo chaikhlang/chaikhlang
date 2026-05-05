@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ชายกลาง — ตลาดไอเทมสุดน่ารัก</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Prompt:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #C8F0FF;
+  --sky2: #E8F9FF;
+  --cloud: #FFFFFF;
+  --mint: #B8F5E0;
+  --mint2: #7EEDC4;
+  --peach: #FFD6C8;
+  --peach2: #FFB09A;
+  --lemon: #FFF3A3;
+  --lemon2: #FFE55C;
+  --lavender: #E4D6FF;
+  --lavender2: #C4A8FF;
+  --coral: #FF8C94;
+  --coral2: #FF5A6A;
+  --navy: #1E2A4A;
+  --navy2: #2E3D6A;
+  --ink: #2A1F3D;
+  --text: #3D2B5A;
+  --text2: #7A6A8A;
+  --text3: #B8A8C8;
+  --white: #FFFFFF;
+  --shadow: rgba(100,60,180,0.12);
+  --shadow2: rgba(100,60,180,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: #F0EBFF;
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='6' cy='4' r='3' fill='%23FF8C94'/%3E%3Cpath d='M6 7v13l4-4 3 5 2-1-3-5h5z' fill='%23C4A8FF'/%3E%3C/svg%3E") 6 4, auto;
+}
+
+/* ===== BG DECORATION ===== */
+.bg-wrap {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bg-blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(60px); opacity: 0.35;
+}
+.bg-blob:nth-child(1) { width: 500px; height: 500px; background: #C4A8FF; top: -100px; left: -100px; animation: blobFloat 8s ease-in-out infinite; }
+.bg-blob:nth-child(2) { width: 400px; height: 400px; background: #FFB09A; top: 30%; right: -80px; animation: blobFloat 10s ease-in-out infinite reverse; }
+.bg-blob:nth-child(3) { width: 350px; height: 350px; background: #7EEDC4; bottom: 10%; left: 20%; animation: blobFloat 12s ease-in-out infinite 2s; }
+@keyframes blobFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.05); } }
+
+.star { position: absolute; animation: twinkle 3s ease-in-out infinite; }
+.star svg { fill: #FFE55C; }
+@keyframes twinkle { 0%,100% { opacity: 1; transform: scale(1) rotate(0deg); } 50% { opacity: 0.4; transform: scale(0.6) rotate(20deg); } }
+
+/* ===== FLOATING MASCOT ===== */
+.mascot-float {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  width: 80px; cursor: pointer;
+  animation: mascotBob 2s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(100,60,180,0.3));
+  transition: transform 0.2s;
+}
+.mascot-float:hover { transform: scale(1.15) rotate(-5deg); }
+@keyframes mascotBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.mascot-bubble {
+  position: fixed; bottom: 114px; right: 24px; z-index: 999;
+  background: white; border-radius: 16px 16px 4px 16px;
+  padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+  box-shadow: 0 4px 20px var(--shadow2);
+  animation: bubblePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+@keyframes bubblePop { from { transform: scale(0) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+/* ===== NAV ===== */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 2px solid white;
+  padding: 0 32px;
+  height: 72px;
+  display: flex; align-items: center; gap: 20px;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; flex-shrink: 0;
+}
+.logo-char { width: 44px; height: 44px; animation: logoBounce 2s ease-in-out infinite; }
+@keyframes logoBounce { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+.logo-text {
+  font-family: 'Prompt', sans-serif;
+  font-size: 22px; font-weight: 800;
+  background: linear-gradient(135deg, #C4A8FF, #FF8C94);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  padding: 8px 18px; border-radius: 40px;
+  background: none; border: none;
+  font-family: 'Sarabun', sans-serif; font-size: 15px; font-weight: 600;
+  color: var(--text2); cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-link:hover { background: var(--lavender); color: var(--text); transform: translateY(-2px); }
+.nav-link.active { background: linear-gradient(135deg, var(--lavender2), #FF8C94); color: white; box-shadow: 0 4px 12px var(--shadow2); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.wallet-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--lemon), var(--lemon2));
+  border: 2px solid white; border-radius: 40px; padding: 6px 16px;
+  font-size: 14px; font-weight: 700; color: #7A5500;
+  cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(255,200,0,0.3);
+}
+.wallet-pill:hover { transform: translateY(-2px) scale(1.03); }
+.btn {
+  padding: 9px 22px; border-radius: 40px; border: none;
+  font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-outline {
+  background: white; color: var(--text);
+  border: 2px solid var(--lavender2);
+}
+.btn-outline:hover { background: var(--lavender); transform: translateY(-2px); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--lavender2), #FF8C94);
+  color: white; box-shadow: 0 4px 16px var(--shadow2);
+}
+.btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px var(--shadow2); }
+.btn-buy {
+  background: linear-gradient(135deg, var(--mint2), #00C896);
+  color: white; box-shadow: 0 4px 16px rgba(0,200,150,0.3);
+}
+.btn-buy:hover { transform: translateY(-2px) scale(1.02); }
+.btn-danger { background: linear-gradient(135deg, var(--coral), var(--coral2)); color: white; }
+.user-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--lavender2), #FF8C94);
+  border: 3px solid white; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: white; cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow2); transition: transform 0.2s;
+}
+.user-av:hover { transform: scale(1.1) rotate(5deg); }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; z-index: 1;
+  padding: 60px 40px 40px; text-align: center;
+  overflow: hidden;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: white; border-radius: 40px; padding: 6px 20px;
+  font-size: 13px; font-weight: 700; color: var(--text);
+  box-shadow: 0 4px 16px var(--shadow); margin-bottom: 20px;
+  animation: fadeInDown 0.6s ease;
+}
+.hero h1 {
+  font-family: 'Prompt', sans-serif;
+  font-size: clamp(36px, 7vw, 68px); font-weight: 800; line-height: 1.1;
+  background: linear-gradient(135deg, var(--ink) 0%, #7C3AED 50%, #FF5A6A 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 16px; animation: fadeInDown 0.7s ease 0.1s both;
+}
+.hero p {
+  font-size: 17px; color: var(--text2); max-width: 520px; margin: 0 auto 32px;
+  line-height: 1.7; animation: fadeInDown 0.7s ease 0.2s both;
+}
+.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: fadeInDown 0.7s ease 0.3s both; }
+.hero-stats {
+  display: flex; justify-content: center; gap: 16px; margin-top: 44px; flex-wrap: wrap;
+  animation: fadeInDown 0.7s ease 0.4s both;
+}
+.stat-card {
+  background: white; border-radius: 20px; padding: 16px 24px;
+  text-align: center; box-shadow: 0 8px 24px var(--shadow);
+  transition: transform 0.2s; min-width: 100px;
+}
+.stat-card:hover { transform: translateY(-4px) rotate(-1deg); }
+.stat-n { font-family: 'Prompt', sans-serif; font-size: 28px; font-weight: 800; color: var(--text); }
+.stat-l { font-size: 12px; font-weight: 600; color: var(--text3); margin-top: 2px; }
+
+/* characters parade */
+.char-parade {
+  display: flex; justify-content: center; gap: 20px; margin: 32px 0 8px;
+  animation: fadeInDown 0.7s ease 0.5s both;
+}
+.char-parade svg { width: 60px; height: 60px; animation: charBounce 1.5s ease-in-out infinite; }
+.char-parade svg:nth-child(2) { animation-delay: 0.2s; }
+.char-parade svg:nth-child(3) { animation-delay: 0.4s; }
+.char-parade svg:nth-child(4) { animation-delay: 0.6s; }
+@keyframes charBounce { 0%,100% { transform: translateY(0) rotate(0); } 40% { transform: translateY(-12px) rotate(-5deg); } 70% { transform: translateY(-6px) rotate(3deg); } }
+
+/* ===== SEARCH ===== */
+.search-section { position: relative; z-index: 1; padding: 0 40px 32px; max-width: 680px; margin: 0 auto; }
+.search-box {
+  display: flex; align-items: center; gap: 12px;
+  background: white; border-radius: 50px; padding: 6px 6px 6px 24px;
+  box-shadow: 0 8px 32px var(--shadow2); border: 2px solid var(--lavender);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.search-box:focus-within { box-shadow: 0 12px 40px var(--shadow2); border-color: var(--lavender2); }
+.search-box input {
+  flex: 1; border: none; outline: none;
+  font-family: 'Sarabun', sans-serif; font-size: 15px; color: var(--text);
+  background: none;
+}
+.search-box input::placeholder { color: var(--text3); }
+
+/* ===== FILTER CHIPS ===== */
+.filters { padding: 0 40px 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; position: relative; z-index: 1; }
+.filter-group-label { font-size: 12px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+.chip {
+  padding: 7px 18px; border-radius: 40px; border: 2px solid transparent;
+  background: white; font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text2); cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 2px 8px var(--shadow);
+  display: flex; align-items: center; gap: 5px;
+}
+.chip:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow2); color: var(--text); }
+.chip.active { background: linear-gradient(135deg, var(--lavender2), #FF8C94); color: white; border-color: transparent; box-shadow: 0 4px 16px var(--shadow2); }
+.sort-sel {
+  margin-left: auto; background: white; border: 2px solid var(--lavender);
+  border-radius: 40px; padding: 7px 16px;
+  font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 600; color: var(--text2);
+  cursor: pointer; outline: none; box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* ===== GRID ===== */
+.main { position: relative; z-index: 1; padding: 0 40px 80px; }
+.section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-title { font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); }
+.cnt-badge {
+  background: white; border-radius: 40px; padding: 4px 14px;
+  font-size: 13px; font-weight: 700; color: var(--text2);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+/* ===== CARD ===== */
+.card {
+  background: white; border-radius: 28px;
+  overflow: hidden; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34,1.36,0.64,1);
+  box-shadow: 0 8px 24px var(--shadow);
+  border: 2px solid transparent; position: relative;
+}
+.card:hover { transform: translateY(-8px) rotate(0.5deg); box-shadow: 0 20px 48px var(--shadow2); border-color: var(--lavender2); }
+.card-banner {
+  height: 130px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.banner-deco {
+  position: absolute; inset: 0;
+  background: var(--banner-bg, linear-gradient(135deg,var(--lavender),var(--peach)));
+}
+.banner-deco::after {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='20' fill='white' fill-opacity='0.15'/%3E%3Ccircle cx='10' cy='10' r='8' fill='white' fill-opacity='0.1'/%3E%3Ccircle cx='50' cy='50' r='6' fill='white' fill-opacity='0.1'/%3E%3C/svg%3E") repeat;
+}
+.card-emoji { font-size: 52px; position: relative; z-index: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); transition: transform 0.3s; }
+.card:hover .card-emoji { transform: scale(1.15) rotate(-5deg); }
+.card-badge {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  border-radius: 12px; padding: 4px 10px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+}
+.badge-new { background: var(--lemon); color: #7A5500; }
+.badge-hot { background: var(--coral); color: white; }
+.badge-escrow { position: absolute; top: 12px; left: 12px; z-index: 2; background: white; border-radius: 40px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: var(--text); box-shadow: 0 2px 8px var(--shadow); display: flex; align-items: center; gap: 4px; }
+
+.card-body { padding: 16px 18px; }
+.game-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--lavender); color: #5A1ACA; border-radius: 40px;
+  padding: 3px 12px; font-size: 11px; font-weight: 700; margin-bottom: 8px;
+}
+.card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-desc { font-size: 12px; color: var(--text3); line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-meta { display: flex; gap: 8px; margin-bottom: 12px; }
+.meta-chip { font-size: 11px; color: var(--text3); background: #F7F3FF; border-radius: 20px; padding: 2px 8px; font-weight: 600; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 2px dashed #F0EBFF; }
+.price { font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 800; color: #5A1ACA; }
+.price-unit { font-size: 12px; color: var(--text3); font-family: 'Sarabun', sans-serif; font-weight: 600; }
+.seller-row { display: flex; align-items: center; gap: 6px; }
+.seller-av {
+  width: 26px; height: 26px; border-radius: 50%;
+  font-size: 10px; font-weight: 700; color: white; display: flex; align-items: center; justify-content: center;
+  border: 2px solid white; box-shadow: 0 2px 6px var(--shadow);
+}
+.seller-name { font-size: 11px; font-weight: 700; color: var(--text2); }
+.stars { font-size: 10px; color: #FFB800; }
+
+/* ===== MODAL ===== */
+.overlay {
+  position: fixed; inset: 0; z-index: 200; padding: 20px;
+  background: rgba(30,10,60,0.6); backdrop-filter: blur(10px);
+  display: none; align-items: center; justify-content: center;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 32px;
+  width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(100,60,180,0.4);
+  animation: modalPop 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalPop { from { transform: scale(0.7) translateY(40px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.modal-top {
+  height: 120px; border-radius: 32px 32px 0 0; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-top-deco { position: absolute; inset: 0; }
+.modal-top-emoji { font-size: 56px; position: relative; z-index: 1; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2)); }
+.modal-close-btn {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.9); cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: transform 0.2s;
+}
+.modal-close-btn:hover { transform: rotate(90deg) scale(1.1); }
+.modal-body { padding: 20px 24px 24px; }
+.modal-title { font-family: 'Prompt', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.modal-game-tag { margin-bottom: 10px; }
+.modal-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 16px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.info-cell { background: #F7F3FF; border-radius: 14px; padding: 10px 14px; }
+.info-cell-label { font-size: 11px; font-weight: 700; color: var(--text3); margin-bottom: 2px; }
+.info-cell-val { font-size: 14px; font-weight: 700; color: var(--text); }
+.seller-box { display: flex; align-items: center; gap: 12px; background: #F7F3FF; border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; }
+.seller-av-lg { width: 44px; height: 44px; border-radius: 50%; font-size: 16px; font-weight: 700; color: white; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 4px 12px var(--shadow2); flex-shrink: 0; }
+.escrow-box {
+  background: linear-gradient(135deg, var(--mint), #A8F0D4);
+  border-radius: 16px; padding: 14px 16px; margin-bottom: 14px;
+  display: flex; gap: 10px; align-items: flex-start;
+  border: 2px solid var(--mint2);
+}
+.escrow-icon { font-size: 22px; flex-shrink: 0; }
+.escrow-text { font-size: 13px; color: #1A5A3A; line-height: 1.6; font-weight: 600; }
+.fee-box { background: var(--lavender); border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; }
+.fee-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; color: var(--text2); font-weight: 600; }
+.fee-row.total { border-top: 2px dashed #C4A8FF; padding-top: 10px; margin-top: 6px; font-size: 17px; font-weight: 800; color: #5A1ACA; }
+.modal-actions { display: flex; gap: 10px; }
+
+/* ===== ESCROW STEPS ===== */
+.escrow-steps { margin-bottom: 16px; }
+.estep { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 2px dashed #F0EBFF; }
+.estep:last-child { border-bottom: none; }
+.estep-circle {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+}
+.estep-done .estep-circle { background: linear-gradient(135deg, var(--mint2), #00C896); color: white; }
+.estep-active .estep-circle { background: linear-gradient(135deg, var(--lavender2), #FF8C94); color: white; animation: stepPulse 1.5s ease-in-out infinite; }
+.estep-wait .estep-circle { background: #F0EBFF; color: var(--text3); }
+@keyframes stepPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(196,168,255,0.5); } 50% { box-shadow: 0 0 0 8px rgba(196,168,255,0); } }
+.estep-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.estep-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 14px; }
+.form-label { display: block; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+.form-input {
+  width: 100%; background: #F7F3FF; border: 2px solid var(--lavender);
+  border-radius: 14px; padding: 11px 16px; color: var(--text);
+  font-family: 'Sarabun', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--lavender2); background: white; }
+.form-err { color: var(--coral2); font-size: 12px; font-weight: 700; margin-top: 6px; }
+.auth-note { text-align: center; font-size: 13px; color: var(--text3); font-weight: 600; margin-top: 12px; }
+.auth-note a { color: #7C3AED; cursor: pointer; text-decoration: none; font-weight: 700; }
+.demo-box { background: var(--lemon); border-radius: 12px; padding: 10px 14px; font-size: 12px; color: #7A5500; font-weight: 600; margin-top: 12px; }
+
+/* ===== TOPUP GRID ===== */
+.topup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.topup-btn {
+  background: #F7F3FF; border: 2px solid var(--lavender); border-radius: 14px;
+  padding: 12px; font-family: 'Sarabun', sans-serif; font-size: 15px; font-weight: 800;
+  color: #5A1ACA; cursor: pointer; transition: all 0.2s;
+}
+.topup-btn:hover { background: var(--lavender); transform: translateY(-2px); }
+
+/* ===== ORDERS PAGE ===== */
+.order-card {
+  background: white; border-radius: 20px; padding: 16px 18px; margin-bottom: 12px;
+  cursor: pointer; box-shadow: 0 4px 16px var(--shadow); transition: all 0.2s;
+  display: flex; align-items: center; gap: 14px;
+  border: 2px solid transparent;
+}
+.order-card:hover { transform: translateX(4px); border-color: var(--lavender2); }
+.order-emoji { font-size: 32px; }
+.order-info { flex: 1; }
+.order-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.order-id { font-size: 12px; color: var(--text3); }
+.order-right { text-align: right; }
+.order-price { font-family: 'Prompt', sans-serif; font-size: 18px; font-weight: 800; color: #5A1ACA; }
+.status-pill { border-radius: 40px; padding: 4px 12px; font-size: 11px; font-weight: 800; margin-top: 4px; display: inline-block; }
+
+/* ===== SELL PAGE ===== */
+.sell-hero { text-align: center; padding: 40px 20px; }
+.sell-hero .big-emoji { font-size: 80px; margin-bottom: 16px; animation: charBounce 2s ease-in-out infinite; display: inline-block; }
+
+/* ===== TOAST ===== */
+.toasts { position: fixed; bottom: 116px; right: 24px; z-index: 300; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast {
+  background: white; border-radius: 20px; padding: 12px 18px;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  box-shadow: 0 8px 24px var(--shadow2); min-width: 220px;
+  display: flex; align-items: center; gap: 8px;
+  animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  border-left: 4px solid #ccc;
+}
+.toast.s { border-left-color: var(--mint2); }
+.toast.e { border-left-color: var(--coral); }
+.toast.i { border-left-color: var(--lavender2); }
+@keyframes toastIn { from { transform: translateX(60px) scale(0.8); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+
+@keyframes fadeInDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg-wrap">
+  <div class="bg-blob"></div>
+  <div class="bg-blob"></div>
+  <div class="bg-blob"></div>
+  <!-- stars -->
+  <div class="star" style="top:12%;left:10%;animation-delay:0s"><svg width="16" height="16" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg></div>
+  <div class="star" style="top:25%;right:8%;animation-delay:1s"><svg width="12" height="12" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg></div>
+  <div class="star" style="top:60%;left:5%;animation-delay:2s"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg></div>
+  <div class="star" style="bottom:20%;right:12%;animation-delay:0.5s"><svg width="14" height="14" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg></div>
+</div>
+
+<!-- MASCOT -->
+<svg class="mascot-float" id="mascot" viewBox="0 0 80 100" onclick="mascotTalk()" xmlns="http://www.w3.org/2000/svg">
+  <!-- body -->
+  <ellipse cx="40" cy="65" rx="26" ry="30" fill="#C4A8FF"/>
+  <!-- belly -->
+  <ellipse cx="40" cy="70" rx="16" ry="18" fill="#E8D8FF"/>
+  <!-- head -->
+  <circle cx="40" cy="32" r="26" fill="#C4A8FF"/>
+  <!-- ears -->
+  <ellipse cx="17" cy="14" rx="9" ry="14" fill="#C4A8FF" transform="rotate(-15,17,14)"/>
+  <ellipse cx="63" cy="14" rx="9" ry="14" fill="#C4A8FF" transform="rotate(15,63,14)"/>
+  <ellipse cx="17" cy="14" rx="5" ry="9" fill="#FF8C94" transform="rotate(-15,17,14)"/>
+  <ellipse cx="63" cy="14" rx="5" ry="9" fill="#FF8C94" transform="rotate(15,63,14)"/>
+  <!-- eyes -->
+  <circle cx="31" cy="30" r="7" fill="white"/>
+  <circle cx="49" cy="30" r="7" fill="white"/>
+  <circle cx="33" cy="31" r="4" fill="#2A1F3D"/>
+  <circle cx="51" cy="31" r="4" fill="#2A1F3D"/>
+  <circle cx="34.5" cy="29.5" r="1.5" fill="white"/>
+  <circle cx="52.5" cy="29.5" r="1.5" fill="white"/>
+  <!-- blush -->
+  <ellipse cx="21" cy="38" rx="7" ry="4" fill="#FFB09A" opacity="0.6"/>
+  <ellipse cx="59" cy="38" rx="7" ry="4" fill="#FFB09A" opacity="0.6"/>
+  <!-- nose + mouth -->
+  <ellipse cx="40" cy="37" rx="3" ry="2" fill="#FF8C94"/>
+  <path d="M34 42 Q40 48 46 42" stroke="#7C3AED" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- shield -->
+  <path d="M28 72 L40 68 L52 72 L52 82 Q40 88 28 82 Z" fill="#7EEDC4" stroke="white" stroke-width="2"/>
+  <path d="M36 76 L39 79 L45 73" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<div id="mascot-bubble" style="display:none" class="mascot-bubble">สวัสดี! 👋 ซื้อขายปลอดภัยกับฉันนะ~</div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <svg class="logo-char" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="20" r="16" fill="#C4A8FF"/>
+      <ellipse cx="12" cy="9" rx="5" ry="8" fill="#C4A8FF" transform="rotate(-15,12,9)"/>
+      <ellipse cx="32" cy="9" rx="5" ry="8" fill="#C4A8FF" transform="rotate(15,32,9)"/>
+      <ellipse cx="12" cy="9" rx="3" ry="5" fill="#FF8C94" transform="rotate(-15,12,9)"/>
+      <ellipse cx="32" cy="9" rx="3" ry="5" fill="#FF8C94" transform="rotate(15,32,9)"/>
+      <circle cx="17" cy="18" r="4" fill="white"/>
+      <circle cx="27" cy="18" r="4" fill="white"/>
+      <circle cx="18" cy="19" r="2.5" fill="#2A1F3D"/>
+      <circle cx="28" cy="19" r="2.5" fill="#2A1F3D"/>
+      <circle cx="19" cy="18" r="1" fill="white"/>
+      <circle cx="29" cy="18" r="1" fill="white"/>
+      <ellipse cx="22" cy="24" rx="2" ry="1.5" fill="#FF8C94"/>
+      <path d="M18 27 Q22 31 26 27" stroke="#7C3AED" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M14 34 L22 31 L30 34 L30 40 Q22 44 14 40 Z" fill="#7EEDC4" stroke="white" stroke-width="1.5"/>
+      <path d="M20 37 L22 39 L26 35" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="logo-text">ชายกลาง</span>
+  </a>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('market',this)">🏪 ตลาด</button>
+    <button class="nav-link" onclick="showPage('orders',this)">📋 คำสั่งซื้อ</button>
+    <button class="nav-link" onclick="showPage('sell',this)">✨ ขายไอเทม</button>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <button class="btn btn-outline" onclick="openM('login-m')">เข้าสู่ระบบ</button>
+    <button class="btn btn-primary" onclick="openM('reg-m')">✨ สมัครฟรี!</button>
+  </div>
+</nav>
+
+<!-- PAGE: MARKET -->
+<div id="page-market">
+
+<section class="hero">
+  <div class="hero-badge">🔒 ระบบ Escrow ปกป้องทุกธุรกรรม — ปลอดภัย 100%</div>
+  <h1>ซื้อขายไอเทมเกม<br>ง่าย ปลอดภัย น่ารัก~</h1>
+  <p>ตลาดกลางสำหรับเกมเมอร์ไทย เงินจะถึงมือคนขายก็ต่อเมื่อคุณกดยืนยันรับของแล้วเท่านั้น 🛡️</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary" style="font-size:16px;padding:12px 28px" onclick="document.getElementById('search-inp').focus()">🛒 เริ่มช้อปเลย!</button>
+    <button class="btn btn-outline" style="font-size:16px;padding:12px 28px" onclick="openM('reg-m')">🌟 สมัครขายฟรี</button>
+  </div>
+  <div class="char-parade">
+    <!-- char 1: sword cat -->
+    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="26" r="18" fill="#FFD6C8"/>
+      <ellipse cx="18" cy="11" rx="6" ry="9" fill="#FFD6C8" transform="rotate(-15,18,11)"/>
+      <ellipse cx="42" cy="11" rx="6" ry="9" fill="#FFD6C8" transform="rotate(15,42,11)"/>
+      <ellipse cx="18" cy="11" rx="3.5" ry="5.5" fill="#FF8C94" transform="rotate(-15,18,11)"/>
+      <ellipse cx="42" cy="11" rx="3.5" ry="5.5" fill="#FF8C94" transform="rotate(15,42,11)"/>
+      <circle cx="23" cy="24" r="4" fill="white"/><circle cx="37" cy="24" r="4" fill="white"/>
+      <circle cx="24" cy="25" r="2.5" fill="#2A1F3D"/><circle cx="38" cy="25" r="2.5" fill="#2A1F3D"/>
+      <circle cx="25" cy="24" r="1" fill="white"/><circle cx="39" cy="24" r="1" fill="white"/>
+      <ellipse cx="14" cy="30" rx="5" ry="3" fill="#FFB09A" opacity="0.6"/>
+      <ellipse cx="46" cy="30" rx="5" ry="3" fill="#FFB09A" opacity="0.6"/>
+      <path d="M25 31 Q30 36 35 31" stroke="#7C3AED" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <rect x="27" y="40" width="6" height="16" rx="3" fill="#C4A8FF"/>
+      <rect x="22" y="43" width="16" height="4" rx="2" fill="#9A7AEA"/>
+      <path d="M30 40 L30 14" stroke="#FFE55C" stroke-width="2.5" stroke-linecap="round"/>
+      <polygon points="30,10 28,16 32,16" fill="#FFE55C"/>
+    </svg>
+    <!-- char 2: coin bunny -->
+    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="17" cy="14" rx="5" ry="14" fill="#E4D6FF" transform="rotate(-5,17,14)"/>
+      <ellipse cx="43" cy="14" rx="5" ry="14" fill="#E4D6FF" transform="rotate(5,43,14)"/>
+      <ellipse cx="17" cy="14" rx="3" ry="9" fill="#C4A8FF" transform="rotate(-5,17,14)"/>
+      <ellipse cx="43" cy="14" rx="3" ry="9" fill="#C4A8FF" transform="rotate(5,43,14)"/>
+      <circle cx="30" cy="30" r="20" fill="#E4D6FF"/>
+      <circle cx="22" cy="27" r="4.5" fill="white"/><circle cx="38" cy="27" r="4.5" fill="white"/>
+      <circle cx="22.5" cy="27.5" r="3" fill="#2A1F3D"/><circle cx="38.5" cy="27.5" r="3" fill="#2A1F3D"/>
+      <circle cx="23.5" cy="26.5" r="1.2" fill="white"/><circle cx="39.5" cy="26.5" r="1.2" fill="white"/>
+      <ellipse cx="15" cy="33" rx="5" ry="3" fill="#FFB09A" opacity="0.5"/>
+      <ellipse cx="45" cy="33" rx="5" ry="3" fill="#FFB09A" opacity="0.5"/>
+      <path d="M26 34 Q30 39 34 34" stroke="#9A7AEA" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="50" r="10" fill="#FFE55C" stroke="#FFB800" stroke-width="2"/>
+      <text x="30" y="54" text-anchor="middle" font-size="10" font-weight="800" fill="#7A5500">฿</text>
+    </svg>
+    <!-- char 3: shield dog -->
+    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="15" cy="16" rx="7" ry="10" fill="#B8F5E0"/>
+      <ellipse cx="45" cy="16" rx="7" ry="10" fill="#B8F5E0"/>
+      <circle cx="30" cy="28" r="20" fill="#B8F5E0"/>
+      <ellipse cx="22" cy="25" r="4" fill="white"/><ellipse cx="38" cy="25" r="4" fill="white"/>
+      <circle cx="22" cy="25.5" r="2.5" fill="#2A1F3D"/><circle cx="38" cy="25.5" r="2.5" fill="#2A1F3D"/>
+      <circle cx="23" cy="24.5" r="1" fill="white"/><circle cx="39" cy="24.5" r="1" fill="white"/>
+      <ellipse cx="30" cy="32" rx="5" ry="4" fill="#7EEDC4"/>
+      <ellipse cx="30" cy="31" rx="3" ry="2" fill="#FF8C94"/>
+      <ellipse cx="14" cy="31" rx="5" ry="3" fill="#7EEDC4" opacity="0.7"/>
+      <ellipse cx="46" cy="31" rx="5" ry="3" fill="#7EEDC4" opacity="0.7"/>
+      <path d="M18 42 L30 38 L42 42 L42 50 Q30 56 18 50 Z" fill="#7EEDC4" stroke="white" stroke-width="2"/>
+      <path d="M27 46 L30 49 L35 43" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <!-- char 4: sparkle cat -->
+    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="16" cy="10" rx="5" ry="8" fill="#FFF3A3" transform="rotate(-10,16,10)"/>
+      <ellipse cx="44" cy="10" rx="5" ry="8" fill="#FFF3A3" transform="rotate(10,44,10)"/>
+      <ellipse cx="16" cy="10" rx="3" ry="5" fill="#FFE55C" transform="rotate(-10,16,10)"/>
+      <ellipse cx="44" cy="10" rx="3" ry="5" fill="#FFE55C" transform="rotate(10,44,10)"/>
+      <circle cx="30" cy="28" r="20" fill="#FFF3A3"/>
+      <circle cx="22" cy="26" r="4" fill="white"/><circle cx="38" cy="26" r="4" fill="white"/>
+      <circle cx="23" cy="27" r="2.5" fill="#2A1F3D"/><circle cx="39" cy="27" r="2.5" fill="#2A1F3D"/>
+      <circle cx="24" cy="26" r="1" fill="white"/><circle cx="40" cy="26" r="1" fill="white"/>
+      <ellipse cx="14" cy="32" rx="5" ry="3" fill="#FFB09A" opacity="0.6"/>
+      <ellipse cx="46" cy="32" rx="5" ry="3" fill="#FFB09A" opacity="0.6"/>
+      <path d="M26 34 Q30 38 34 34" stroke="#FF8C94" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <polygon points="30,50 31.5,55 36,55 32.5,57.5 34,62 30,59.5 26,62 27.5,57.5 24,55 28.5,55" fill="#FFE55C" transform="scale(0.7) translate(13,-20)"/>
+      <text x="30" y="56" text-anchor="middle" font-size="14">✨</text>
+    </svg>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="stat-n" id="stat-count">1,240</div><div class="stat-l">📦 รายการ</div></div>
+    <div class="stat-card"><div class="stat-n">12K+</div><div class="stat-l">🎮 ผู้ใช้งาน</div></div>
+    <div class="stat-card"><div class="stat-n">99.2%</div><div class="stat-l">😊 พอใจ</div></div>
+    <div class="stat-card"><div class="stat-n">฿0</div><div class="stat-l">🎁 ค่าสมัคร</div></div>
+  </div>
+</section>
+
+<div class="search-section">
+  <div class="search-box">
+    <span style="font-size:20px">🔍</span>
+    <input id="search-inp" placeholder="ค้นหาไอเทม, บัญชีเกม, ชื่อเกม..." oninput="applyFilters()">
+    <button class="btn btn-primary" style="border-radius:40px">ค้นหา ✨</button>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="filter-group-label">เกม</span>
+  <button class="chip active" data-g="all" onclick="setGame(this,'all')">🌈 ทั้งหมด</button>
+  <button class="chip" data-g="Ragnarok" onclick="setGame(this,'Ragnarok')">⚔️ Ragnarok</button>
+  <button class="chip" data-g="ROV" onclick="setGame(this,'ROV')">🎮 ROV</button>
+  <button class="chip" data-g="Genshin" onclick="setGame(this,'Genshin')">⚡ Genshin</button>
+  <button class="chip" data-g="PUBG" onclick="setGame(this,'PUBG')">🔫 PUBG</button>
+  <button class="chip" data-g="Valorant" onclick="setGame(this,'Valorant')">🔪 Valorant</button>
+  <button class="chip" data-g="Honkai" onclick="setGame(this,'Honkai')">🌟 Honkai SR</button>
+  <span class="filter-group-label" style="margin-left:8px">ประเภท</span>
+  <button class="chip active" data-c="all" onclick="setCat(this,'all')">ทั้งหมด</button>
+  <button class="chip" data-c="account" onclick="setCat(this,'account')">👤 บัญชี</button>
+  <button class="chip" data-c="item" onclick="setCat(this,'item')">🗡️ ไอเทม</button>
+  <button class="chip" data-c="currency" onclick="setCat(this,'currency')">💰 เงินในเกม</button>
+  <select class="sort-sel" onchange="applyFilters()">
+    <option value="new">✨ ล่าสุด</option>
+    <option value="cheap">💸 ราคาน้อย → มาก</option>
+    <option value="expensive">💎 ราคามาก → น้อย</option>
+    <option value="popular">🔥 ยอดนิยม</option>
+  </select>
+</div>
+
+<div class="main">
+  <div class="section-head">
+    <div class="section-title">🛍️ รายการสินค้า</div>
+    <div class="cnt-badge" id="cnt-badge">8 รายการ</div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+</div><!-- /page-market -->
+
+<!-- PAGE: ORDERS -->
+<div id="page-orders" style="display:none;padding:32px 40px 80px;position:relative;z-index:1">
+  <div class="section-head"><div class="section-title">📋 คำสั่งซื้อของฉัน</div></div>
+  <div id="orders-list"></div>
+</div>
+
+<!-- PAGE: SELL -->
+<div id="page-sell" style="display:none;padding:32px 40px 80px;position:relative;z-index:1">
+  <div class="sell-hero">
+    <div class="big-emoji">📦</div>
+    <h2 style="font-family:'Prompt',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin-bottom:8px">ขายไอเทมของคุณ</h2>
+    <p style="color:var(--text2);font-size:16px;margin-bottom:24px">เข้าสู่ระบบเพื่อลงขาย ฟรี ไม่มีค่าใช้จ่าย เงินปลอดภัยกับระบบ Escrow</p>
+    <button class="btn btn-primary" style="font-size:16px;padding:12px 32px" onclick="openM('login-m')">🌟 เข้าสู่ระบบเพื่อขาย</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Detail -->
+<div class="overlay" id="detail-m" onclick="if(event.target===this)closeM('detail-m')">
+  <div class="modal">
+    <div class="modal-top" id="d-top"><div class="modal-top-deco" id="d-top-deco"></div><div id="d-emoji" class="modal-top-emoji">🎮</div><button class="modal-close-btn" onclick="closeM('detail-m')">✕</button></div>
+    <div class="modal-body" id="d-body"></div>
+  </div>
+</div>
+
+<!-- Escrow tracking -->
+<div class="overlay" id="escrow-m" onclick="if(event.target===this)closeM('escrow-m')">
+  <div class="modal">
+    <div class="modal-top" style="background:linear-gradient(135deg,var(--mint),#A8F0D4)">
+      <span style="font-size:56px;position:relative;z-index:1">🔒</span>
+      <button class="modal-close-btn" onclick="closeM('escrow-m')">✕</button>
+    </div>
+    <div class="modal-body" id="escrow-body"></div>
+  </div>
+</div>
+
+<!-- Login -->
+<div class="overlay" id="login-m" onclick="if(event.target===this)closeM('login-m')">
+  <div class="modal">
+    <div class="modal-top" style="background:linear-gradient(135deg,var(--lavender),var(--peach))">
+      <span style="font-size:56px;position:relative;z-index:1">🐾</span>
+      <button class="modal-close-btn" onclick="closeM('login-m')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">ยินดีต้อนรับกลับมา~</div>
+      <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:16px">เข้าสู่ระบบเพื่อซื้อขายไอเทมปลอดภัย</p>
+      <div class="form-group"><label class="form-label">📧 อีเมล</label><input class="form-input" type="email" id="l-email" placeholder="your@email.com"></div>
+      <div class="form-group"><label class="form-label">🔑 รหัสผ่าน</label><input class="form-input" type="password" id="l-pw" placeholder="รหัสผ่าน"></div>
+      <div class="form-err" id="l-err"></div>
+      <button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;justify-content:center" onclick="doLogin()">🌟 เข้าสู่ระบบ</button>
+      <div class="auth-note">ยังไม่มีบัญชี? <a onclick="switchM('login-m','reg-m')">สมัครฟรีเลย!</a></div>
+      <div class="demo-box">🧪 ทดสอบ: dragon@test.com / 1234</div>
+    </div>
+  </div>
+</div>
+
+<!-- Register -->
+<div class="overlay" id="reg-m" onclick="if(event.target===this)closeM('reg-m')">
+  <div class="modal">
+    <div class="modal-top" style="background:linear-gradient(135deg,var(--mint),var(--lemon))">
+      <span style="font-size:56px;position:relative;z-index:1">🌟</span>
+      <button class="modal-close-btn" onclick="closeM('reg-m')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">สมัครสมาชิก ฟรี!</div>
+      <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:16px">เข้าร่วมชุมชนเกมเมอร์ที่ปลอดภัยที่สุด</p>
+      <div class="form-group"><label class="form-label">😊 ชื่อผู้ใช้</label><input class="form-input" id="r-name" placeholder="ชื่อในระบบ"></div>
+      <div class="form-group"><label class="form-label">📧 อีเมล</label><input class="form-input" type="email" id="r-email" placeholder="your@email.com"></div>
+      <div class="form-group"><label class="form-label">🔑 รหัสผ่าน</label><input class="form-input" type="password" id="r-pw" placeholder="อย่างน้อย 8 ตัวอักษร"></div>
+      <div class="form-err" id="r-err"></div>
+      <button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;justify-content:center" onclick="doRegister()">✨ สมัครสมาชิก ฟรี!</button>
+      <div class="auth-note">มีบัญชีแล้ว? <a onclick="switchM('reg-m','login-m')">เข้าสู่ระบบ</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Topup -->
+<div class="overlay" id="topup-m" onclick="if(event.target===this)closeM('topup-m')">
+  <div class="modal">
+    <div class="modal-top" style="background:linear-gradient(135deg,var(--lemon),#FFD000)">
+      <span style="font-size:56px;position:relative;z-index:1">💰</span>
+      <button class="modal-close-btn" onclick="closeM('topup-m')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">เติมเงินกระเป๋า 🐱</div>
+      <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:16px">เลือกจำนวนหรือกรอกเอง</p>
+      <div class="topup-grid">
+        <button class="topup-btn" onclick="setTopup(100)">฿100</button>
+        <button class="topup-btn" onclick="setTopup(500)">฿500</button>
+        <button class="topup-btn" onclick="setTopup(1000)">฿1,000</button>
+        <button class="topup-btn" onclick="setTopup(5000)">฿5,000</button>
+      </div>
+      <div class="form-group"><label class="form-label">💵 จำนวนเงิน (บาท)</label><input class="form-input" type="number" id="topup-inp" placeholder="50 – 50,000"></div>
+      <div style="background:var(--lemon);border-radius:12px;padding:10px 14px;font-size:12px;color:#7A5500;font-weight:700;margin-bottom:14px">⚡ Demo Mode — ระบบจริงเชื่อม PromptPay + บัตรเครดิต</div>
+      <button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;justify-content:center" onclick="doTopup()">💰 เติมเงินเลย!</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+const BANNER_COLORS = {
+  Ragnarok: 'linear-gradient(135deg,#FFD6C8,#FFB09A)',
+  ROV: 'linear-gradient(135deg,#B8F5E0,#7EEDC4)',
+  Genshin: 'linear-gradient(135deg,#FFF3A3,#FFE55C)',
+  PUBG: 'linear-gradient(135deg,#E4D6FF,#C4A8FF)',
+  Valorant: 'linear-gradient(135deg,#FFD6C8,#FF8C94)',
+  Honkai: 'linear-gradient(135deg,#C8F0FF,#7BC8FF)',
+  FIFA: 'linear-gradient(135deg,#B8F5E0,#FFD6C8)',
+  default: 'linear-gradient(135deg,#E4D6FF,#B8F5E0)'
+};
+const AV_COLORS = ['linear-gradient(135deg,#C4A8FF,#FF8C94)','linear-gradient(135deg,#7EEDC4,#C4A8FF)','linear-gradient(135deg,#FFE55C,#FFB09A)','linear-gradient(135deg,#FF8C94,#FFE55C)'];
+
+const ITEMS = [
+  {id:'l1',emoji:'💰',title:'Zeny 10,000,000 — Ragnarok Origin',game:'Ragnarok',cat:'currency',server:'Asia-TH01',price:420,desc:'ส่งเร็วภายใน 30 นาที รับประกัน ขายมาแล้ว 300+ ออเดอร์',seller:'zeny_shop',av:'ZS',avC:2,verified:true,rating:5.0,sold:312,isHot:true},
+  {id:'l2',emoji:'⚔️',title:'Dark Sword +15 Full Enchant',game:'Ragnarok',cat:'item',server:'Asia01',price:850,desc:'Dark Sword +15 Full enchant ค่า ATK สูงสุด card slot ครบ',seller:'dragonX99',av:'DX',avC:0,verified:true,rating:4.9,sold:0,isNew:true},
+  {id:'l3',emoji:'🎮',title:'บัญชี ROV Diamond III + สกิน 45 ชิ้น',game:'ROV',cat:'account',server:'TH',price:3200,desc:'Rank Diamond III Hero 38 ตัว สกิน Rare 45 ชิ้น ไม่มีประวัติโกง',seller:'shadow_pro',av:'SP',avC:1,verified:true,rating:4.7,sold:0,isNew:true},
+  {id:'l4',emoji:'⚡',title:'บัญชี Genshin AR55 + Raiden C2',game:'Genshin',cat:'account',server:'Asia',price:5500,desc:'AR55 Raiden Shogun C2, Hu Tao C1, Eula C0 Welkin เหลือ 20 วัน',seller:'gamevault',av:'GV',avC:3,verified:true,rating:4.8,sold:0},
+  {id:'l5',emoji:'🔫',title:'PUBG Mobile UC 3850 ยูซี',game:'PUBG',cat:'currency',server:'TH',price:990,desc:'UC จริง ไม่ใช่แฮก ส่งทันทีหลังชำระ ปลอดภัย 100%',seller:'zeny_shop',av:'ZS',avC:2,verified:true,rating:5.0,sold:89,isHot:true},
+  {id:'l6',emoji:'🔪',title:'Valorant Immortal + Elderflame Knife',game:'Valorant',cat:'account',server:'SEA',price:2400,desc:'Rank Immortal 2 Elderflame Knife สกินครบ ไม่เคย ban',seller:'shadow_pro',av:'SP',avC:1,verified:true,rating:4.7,sold:0,isNew:true},
+  {id:'l7',emoji:'⚽',title:'FIFA Online 4 — NXT Mbappe',game:'FIFA',cat:'item',server:'TH',price:1800,desc:'NXT Mbappe เกรด A ไม่มีโปรแกรมเสริม สภาพดี',seller:'gamevault',av:'GV',avC:3,verified:true,rating:4.8,sold:7},
+  {id:'l8',emoji:'🌟',title:'Honkai Star Rail — Acheron E2S1',game:'Honkai',cat:'account',server:'Asia',price:7200,desc:'Acheron E2S1 + Sparkle E0S1 + Robin E0 Trailblaze 65',seller:'dragonX99',av:'DX',avC:0,verified:true,rating:4.9,sold:0},
+];
+
+let st = { user:null, wallet:0, orders:[], gameF:'all', catF:'all' };
+
+function renderCards(items) {
+  document.getElementById('cnt-badge').textContent = items.length + ' รายการ';
+  const g = document.getElementById('grid');
+  if (!items.length) {
+    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:48px;margin-bottom:12px">🔍</div><div style="font-size:16px;font-weight:700">ไม่พบรายการที่ตรงกัน</div></div>';
+    return;
+  }
+  g.innerHTML = items.map((l,i) => {
+    const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
+    return `<div class="card" onclick="openDetail('${l.id}')" style="animation: fadeInDown 0.4s ease ${i*0.06}s both">
+      <div class="card-banner">
+        <div class="banner-deco" style="background:${bg}"></div>
+        <span class="card-emoji">${l.emoji}</span>
+        ${l.isHot ? '<span class="card-badge badge-hot">🔥 HOT</span>' : l.isNew ? '<span class="card-badge badge-new">✨ ใหม่</span>' : ''}
+        <span class="badge-escrow">🔒 Escrow</span>
+      </div>
+      <div class="card-body">
+        <span class="game-tag">🎮 ${l.game}</span>
+        <div class="card-title">${l.title}</div>
+        <div class="card-desc">${l.desc}</div>
+        <div class="card-meta">
+          <span class="meta-chip">🖥️ ${l.server}</span>
+          ${l.sold > 0 ? `<span class="meta-chip">✅ ขาย ${l.sold}</span>` : ''}
+        </div>
+        <div class="card-footer">
+          <div><div class="price">฿${l.price.toLocaleString()}</div><div class="price-unit">บาท</div></div>
+          <div class="seller-row">
+            <div class="seller-av" style="background:${AV_COLORS[l.avC]}">${l.av}</div>
+            <div>
+              <div class="seller-name">${l.seller}${l.verified?' ✓':''}</div>
+              <div class="stars">${'★'.repeat(Math.round(l.rating))} ${l.rating}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const q = document.getElementById('search-inp').value.toLowerCase();
+  const sort = document.querySelector('.sort-sel').value;
+  let r = ITEMS.filter(l =>
+    (st.gameF==='all'||l.game===st.gameF) &&
+    (st.catF==='all'||l.cat===st.catF) &&
+    (!q||l.title.toLowerCase().includes(q)||l.game.toLowerCase().includes(q))
+  );
+  if (sort==='cheap') r.sort((a,b)=>a.price-b.price);
+  else if (sort==='expensive') r.sort((a,b)=>b.price-a.price);
+  else if (sort==='popular') r.sort((a,b)=>b.sold-a.sold);
+  renderCards(r);
+}
+
+function setGame(el,g) { document.querySelectorAll('[data-g]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.gameF=g; applyFilters(); }
+function setCat(el,c) { document.querySelectorAll('[data-c]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.catF=c; applyFilters(); }
+
+function openDetail(id) {
+  const l = ITEMS.find(x=>x.id===id);
+  if (!l) return;
+  const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
+  document.getElementById('d-top-deco').style.background = bg;
+  document.getElementById('d-emoji').textContent = l.emoji;
+  document.getElementById('d-body').innerHTML = `
+    <div class="modal-title">${l.title}</div>
+    <div class="modal-game-tag"><span class="game-tag">🎮 ${l.game}</span></div>
+    <p class="modal-desc">${l.desc}</p>
+    <div class="info-grid">
+      <div class="info-cell"><div class="info-cell-label">🖥️ เซิร์ฟเวอร์</div><div class="info-cell-val">${l.server}</div></div>
+      <div class="info-cell"><div class="info-cell-label">📦 ประเภท</div><div class="info-cell-val">${l.cat==='account'?'บัญชีเกม':l.cat==='item'?'ไอเทม':'เงินในเกม'}</div></div>
+      <div class="info-cell"><div class="info-cell-label">✅ ขายแล้ว</div><div class="info-cell-val">${l.sold} รายการ</div></div>
+      <div class="info-cell"><div class="info-cell-label">⭐ Rating</div><div class="info-cell-val">${l.rating} / 5.0</div></div>
+    </div>
+    <div class="seller-box">
+      <div class="seller-av-lg" style="background:${AV_COLORS[l.avC]}">${l.av}</div>
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text)">${l.seller}${l.verified?' <span style="font-size:12px;color:#5A1ACA">✓ ยืนยันแล้ว</span>':''}</div>
+        <div style="font-size:13px;color:var(--text3);font-weight:600">ขายแล้ว ${l.sold}+ รายการ</div>
+        <div class="stars" style="font-size:14px">${'★'.repeat(Math.round(l.rating))} ${l.rating}</div>
+      </div>
+    </div>
+    <div class="escrow-box">
+      <div class="escrow-icon">🛡️</div>
+      <div class="escrow-text">เงินของคุณจะถูกล็อกไว้ที่ <strong>ระบบ Escrow ชายกลาง</strong> ก่อน — คนขายจะได้รับเงินก็ต่อเมื่อคุณกดยืนยันว่าได้รับของครบแล้วเท่านั้น!</div>
+    </div>
+    <div class="fee-box">
+      <div class="fee-row"><span>💵 ราคาสินค้า</span><span>฿${l.price.toLocaleString()}</span></div>
+      <div class="fee-row"><span>🎁 ค่าบริการ Escrow</span><span style="color:var(--mint2);font-weight:800">ฟรี!</span></div>
+      <div class="fee-row total"><span>รวมที่ต้องชำระ</span><span>฿${l.price.toLocaleString()}</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-buy" style="flex:1;font-size:15px;padding:13px;justify-content:center" onclick="handleBuy('${l.id}',${l.price},'${l.title.replace(/'/g,"\\'")}','${l.emoji}')">
+        🛒 ซื้อเลย ฿${l.price.toLocaleString()}
+      </button>
+    </div>`;
+  openM('detail-m');
+}
+
+function handleBuy(id,price,title,emoji) {
+  if (!st.user) { closeM('detail-m'); toast('กรุณาเข้าสู่ระบบก่อนซื้อนะ~ 🐾','i'); openM('login-m'); return; }
+  if (st.wallet < price) { closeM('detail-m'); toast('กระเป๋าเงินไม่พอ ต้องเติมเงินก่อนนะ! 💰','e'); openM('topup-m'); return; }
+  st.wallet -= price;
+  const oid = 'TXN-' + Math.floor(Math.random()*9000+1000);
+  st.orders.push({ id:oid, title, price, emoji, status:1, created: new Date() });
+  updateWallet();
+  closeM('detail-m');
+  toast('✅ ล็อกเงินใน Escrow แล้ว! ออเดอร์ ' + oid, 's');
+  setTimeout(()=>showEscrow(oid), 700);
+}
+
+function showEscrow(oid) {
+  const o = st.orders.find(x=>x.id===oid);
+  if (!o) return;
+  const steps = [
+    {label:'โอนเงินเข้า Escrow แล้ว 🎉',sub:`฿${o.price.toLocaleString()} ล็อกปลอดภัย`,done:true},
+    {label:'รอคนขายส่งข้อมูล',sub:'คนขายได้รับแจ้งเตือนแล้ว',active:o.status===1},
+    {label:'ตรวจสอบและยืนยันรับของ',sub:'ภายใน 48 ชั่วโมง',active:o.status===2},
+    {label:'โอนเงินให้คนขาย ✨',sub:'เสร็จสิ้นธุรกรรม',active:o.status===3},
+  ];
+  document.getElementById('escrow-body').innerHTML = `
+    <div class="modal-title">ออเดอร์ ${o.id} ${o.emoji}</div>
+    <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:14px">${o.title}</p>
+    <div class="escrow-steps">
+      ${steps.map((s,i)=>`<div class="estep ${s.done?'estep-done':s.active?'estep-active':'estep-wait'}">
+        <div class="estep-circle">${s.done?'✓':i+1}</div>
+        <div><div class="estep-title">${s.label}</div><div class="estep-sub">${s.sub}</div></div>
+      </div>`).join('')}
+    </div>
+    ${o.status===1?`<div class="modal-actions"><button class="btn btn-buy" style="flex:1;justify-content:center;padding:11px" onclick="advStep('${oid}',2)">📩 จำลอง: คนขายส่งข้อมูลแล้ว</button></div>`:
+    o.status===2?`<div class="modal-actions"><button class="btn btn-buy" style="flex:1;justify-content:center;padding:11px" onclick="advStep('${oid}',3)">✅ ยืนยันรับของแล้ว!</button><button class="btn btn-danger" style="padding:11px 16px" onclick="advStep('${oid}','d')">🚨 แจ้งปัญหา</button></div>`:
+    o.status===3?`<div style="background:linear-gradient(135deg,var(--mint),#A8F0D4);border-radius:16px;padding:16px;text-align:center;font-size:15px;font-weight:800;color:#1A5A3A">🎉 ธุรกรรมสำเร็จ! เงินโอนให้คนขายแล้ว</div>`:
+    `<div style="background:var(--lemon);border-radius:16px;padding:16px;text-align:center;font-size:14px;font-weight:700;color:#7A5500">🔍 Dispute เปิดแล้ว — ทีม Admin กำลังตรวจสอบ</div>`}`;
+  openM('escrow-m');
+}
+
+function advStep(oid,next) {
+  const o = st.orders.find(x=>x.id===oid);
+  if (!o) return;
+  if (next==='d') { o.status='d'; toast('เปิด Dispute แล้ว ทีม Admin จะติดต่อ','i'); }
+  else if (next===2) { o.status=2; toast('📩 คนขายส่งข้อมูลแล้ว! ตรวจสอบด่วน~','s'); }
+  else if (next===3) { o.status=3; st.wallet+=Math.round(o.price*0.97); updateWallet(); toast('🎉 ธุรกรรมสำเร็จ! เงินส่วนต่าง cashback กลับมานะ~','s'); }
+  showEscrow(oid);
+}
+
+function showPage(p,el) {
+  ['market','orders','sell'].forEach(x=>document.getElementById('page-'+x).style.display='none');
+  document.getElementById('page-'+p).style.display='block';
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  if (p==='orders') renderOrders();
+  if (p==='sell' && !st.user) { setTimeout(()=>openM('login-m'),300); }
+}
+
+function renderOrders() {
+  const el = document.getElementById('orders-list');
+  if (!st.user) {
+    el.innerHTML = `<div style="text-align:center;padding:60px 20px">
+      <div style="font-size:60px;margin-bottom:12px">🔒</div>
+      <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px">กรุณาเข้าสู่ระบบก่อน</div>
+      <button class="btn btn-primary" style="margin-top:8px" onclick="openM('login-m')">🌟 เข้าสู่ระบบ</button></div>`; return;
+  }
+  if (!st.orders.length) {
+    el.innerHTML = `<div style="text-align:center;padding:60px 20px"><div style="font-size:60px;margin-bottom:12px">📋</div><div style="font-size:18px;font-weight:800;color:var(--text)">ยังไม่มีคำสั่งซื้อ</div><p style="color:var(--text3);margin-top:8px">ลองไปช้อปปิ้งในตลาดก่อนนะ~</p></div>`; return;
+  }
+  const label = {1:'กำลังดำเนินการ',2:'รอยืนยัน',3:'สำเร็จ',d:'Dispute'};
+  const bg = {1:'#E4D6FF',2:'#FFF3A3',3:'#B8F5E0',d:'#FFD6C8'};
+  const tc = {1:'#5A1ACA',2:'#7A5500',3:'#1A5A3A',d:'#8C1A1A'};
+  el.innerHTML = st.orders.map(o=>`
+    <div class="order-card" onclick="showEscrow('${o.id}')">
+      <div class="order-emoji">${o.emoji}</div>
+      <div class="order-info">
+        <div class="order-title">${o.title}</div>
+        <div class="order-id">${o.id}</div>
+      </div>
+      <div class="order-right">
+        <div class="order-price">฿${o.price.toLocaleString()}</div>
+        <div class="status-pill" style="background:${bg[o.status]};color:${tc[o.status]}">${label[o.status]}</div>
+      </div>
+    </div>`).join('');
+}
+
+function doLogin() {
+  const e = document.getElementById('l-email').value;
+  const p = document.getElementById('l-pw').value;
+  document.getElementById('l-err').textContent = '';
+  if (!e||!p) { document.getElementById('l-err').textContent = 'กรุณากรอกข้อมูลให้ครบนะ~'; return; }
+  st.user = { username: e==='dragon@test.com' ? 'dragonX99' : e.split('@')[0], avatar: e.slice(0,2).toUpperCase() };
+  st.wallet = e==='dragon@test.com' ? 5000 : 1000;
+  updateNavUser();
+  closeM('login-m');
+  toast(`ยินดีต้อนรับ ${st.user.username}! 🎉`,'s');
+}
+
+function doRegister() {
+  const n=document.getElementById('r-name').value, e=document.getElementById('r-email').value, p=document.getElementById('r-pw').value;
+  document.getElementById('r-err').textContent='';
+  if (!n||!e||!p) { document.getElementById('r-err').textContent='กรุณากรอกข้อมูลให้ครบนะ~'; return; }
+  if (p.length<8) { document.getElementById('r-err').textContent='รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'; return; }
+  st.user = { username:n, avatar:n.slice(0,2).toUpperCase() };
+  st.wallet = 0;
+  updateNavUser();
+  closeM('reg-m');
+  toast(`ยินดีต้อนรับสู่ชายกลาง ${n}! ✨`,'s');
+}
+
+function doTopup() {
+  const a = Number(document.getElementById('topup-inp').value);
+  if (!a||a<50) { toast('จำนวนเงินขั้นต่ำ 50 บาทนะ! 💰','e'); return; }
+  st.wallet += a;
+  updateWallet();
+  closeM('topup-m');
+  toast(`เติมเงิน ฿${a.toLocaleString()} สำเร็จ! 🎉`,'s');
+}
+
+function setTopup(a) { document.getElementById('topup-inp').value=a; }
+
+function updateNavUser() {
+  document.getElementById('nav-right').innerHTML=`
+    <div class="wallet-pill" onclick="openM('topup-m')">💰 ฿<span id="wb">${st.wallet.toLocaleString()}</span></div>
+    <div class="user-av" title="${st.user.username}">${st.user.avatar}</div>
+    <button class="btn btn-outline" onclick="doLogout()" style="font-size:13px;padding:7px 14px">ออก</button>`;
+}
+function updateWallet() { const el=document.getElementById('wb'); if(el) el.textContent=st.wallet.toLocaleString(); }
+function doLogout() {
+  st.user=null; st.wallet=0; st.orders=[];
+  document.getElementById('nav-right').innerHTML=`<button class="btn btn-outline" onclick="openM('login-m')">เข้าสู่ระบบ</button><button class="btn btn-primary" onclick="openM('reg-m')">✨ สมัครฟรี!</button>`;
+  toast('ออกจากระบบแล้ว~ 👋','i');
+}
+
+function openM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+function switchM(a,b) { closeM(a); openM(b); }
+
+function toast(msg,type='i') {
+  const el=document.createElement('div'); el.className='toast '+type;
+  const ic={s:'🌟',e:'😿',i:'💬'}[type]||'💬';
+  el.innerHTML=`<span>${ic}</span> ${msg}`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(),4000);
+}
+
+const bubbles = ['สวัสดี! 👋 ซื้อขายปลอดภัยกับฉันนะ~','มีปัญหาอะไรถามได้เลย! 💪','Escrow ปกป้องเงินคุณ 100% 🛡️','ซื้อขายกันยืนยันก่อนนะ~ 🐾','วันนี้มีไอเทมใหม่เข้ามาเยอะเลย! ✨'];
+let bubbleIdx=0, bubbleShown=false;
+function mascotTalk() {
+  const b=document.getElementById('mascot-bubble');
+  if (bubbleShown) { b.style.display='none'; bubbleShown=false; return; }
+  b.textContent=bubbles[bubbleIdx++ % bubbles.length];
+  b.style.display='block';
+  bubbleShown=true;
+  setTimeout(()=>{ b.style.display='none'; bubbleShown=false; }, 3500);
+}
+
+renderCards(ITEMS);
+</script>
+</body>
+</html>
