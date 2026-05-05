@@ -15,10 +15,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5500',
 ].filter(Boolean);
 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json({ limit: '10mb' }));
 
