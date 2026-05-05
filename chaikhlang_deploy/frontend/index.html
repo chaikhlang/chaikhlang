@@ -685,7 +685,7 @@ nav {
       <div class="form-err" id="l-err"></div>
       <button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;justify-content:center" onclick="doLogin()">🌟 เข้าสู่ระบบ</button>
       <div class="auth-note">ยังไม่มีบัญชี? <a onclick="switchM('login-m','reg-m')">สมัครฟรีเลย!</a></div>
-      <div class="demo-box">🧪 ทดสอบ: dragon@test.com / 1234</div>
+
     </div>
   </div>
 </div>
@@ -736,33 +736,56 @@ nav {
 <div class="toasts" id="toasts"></div>
 
 <script>
+const API = 'https://chaikhlang-api.onrender.com/api';
 const BANNER_COLORS = {
-  Ragnarok: 'linear-gradient(135deg,#FFD6C8,#FFB09A)',
-  ROV: 'linear-gradient(135deg,#B8F5E0,#7EEDC4)',
-  Genshin: 'linear-gradient(135deg,#FFF3A3,#FFE55C)',
-  PUBG: 'linear-gradient(135deg,#E4D6FF,#C4A8FF)',
-  Valorant: 'linear-gradient(135deg,#FFD6C8,#FF8C94)',
-  Honkai: 'linear-gradient(135deg,#C8F0FF,#7BC8FF)',
-  FIFA: 'linear-gradient(135deg,#B8F5E0,#FFD6C8)',
-  default: 'linear-gradient(135deg,#E4D6FF,#B8F5E0)'
+  'Ragnarok Origin':'linear-gradient(135deg,#FFD6C8,#FFB09A)',
+  'Ragnarok M':'linear-gradient(135deg,#FFD6C8,#FFB09A)',
+  Ragnarok:'linear-gradient(135deg,#FFD6C8,#FFB09A)',
+  ROV:'linear-gradient(135deg,#B8F5E0,#7EEDC4)',
+  'Genshin Impact':'linear-gradient(135deg,#FFF3A3,#FFE55C)',
+  Genshin:'linear-gradient(135deg,#FFF3A3,#FFE55C)',
+  'PUBG Mobile':'linear-gradient(135deg,#E4D6FF,#C4A8FF)',
+  PUBG:'linear-gradient(135deg,#E4D6FF,#C4A8FF)',
+  Valorant:'linear-gradient(135deg,#FFD6C8,#FF8C94)',
+  'Honkai Star Rail':'linear-gradient(135deg,#C8F0FF,#7BC8FF)',
+  Honkai:'linear-gradient(135deg,#C8F0FF,#7BC8FF)',
+  'FIFA Online 4':'linear-gradient(135deg,#B8F5E0,#FFD6C8)',
+  default:'linear-gradient(135deg,#E4D6FF,#B8F5E0)'
 };
 const AV_COLORS = ['linear-gradient(135deg,#C4A8FF,#FF8C94)','linear-gradient(135deg,#7EEDC4,#C4A8FF)','linear-gradient(135deg,#FFE55C,#FFB09A)','linear-gradient(135deg,#FF8C94,#FFE55C)'];
 
-const ITEMS = [
-  {id:'l1',emoji:'💰',title:'Zeny 10,000,000 — Ragnarok Origin',game:'Ragnarok',cat:'currency',server:'Asia-TH01',price:420,desc:'ส่งเร็วภายใน 30 นาที รับประกัน ขายมาแล้ว 300+ ออเดอร์',seller:'zeny_shop',av:'ZS',avC:2,verified:true,rating:5.0,sold:312,isHot:true},
-  {id:'l2',emoji:'⚔️',title:'Dark Sword +15 Full Enchant',game:'Ragnarok',cat:'item',server:'Asia01',price:850,desc:'Dark Sword +15 Full enchant ค่า ATK สูงสุด card slot ครบ',seller:'dragonX99',av:'DX',avC:0,verified:true,rating:4.9,sold:0,isNew:true},
-  {id:'l3',emoji:'🎮',title:'บัญชี ROV Diamond III + สกิน 45 ชิ้น',game:'ROV',cat:'account',server:'TH',price:3200,desc:'Rank Diamond III Hero 38 ตัว สกิน Rare 45 ชิ้น ไม่มีประวัติโกง',seller:'shadow_pro',av:'SP',avC:1,verified:true,rating:4.7,sold:0,isNew:true},
-  {id:'l4',emoji:'⚡',title:'บัญชี Genshin AR55 + Raiden C2',game:'Genshin',cat:'account',server:'Asia',price:5500,desc:'AR55 Raiden Shogun C2, Hu Tao C1, Eula C0 Welkin เหลือ 20 วัน',seller:'gamevault',av:'GV',avC:3,verified:true,rating:4.8,sold:0},
-  {id:'l5',emoji:'🔫',title:'PUBG Mobile UC 3850 ยูซี',game:'PUBG',cat:'currency',server:'TH',price:990,desc:'UC จริง ไม่ใช่แฮก ส่งทันทีหลังชำระ ปลอดภัย 100%',seller:'zeny_shop',av:'ZS',avC:2,verified:true,rating:5.0,sold:89,isHot:true},
-  {id:'l6',emoji:'🔪',title:'Valorant Immortal + Elderflame Knife',game:'Valorant',cat:'account',server:'SEA',price:2400,desc:'Rank Immortal 2 Elderflame Knife สกินครบ ไม่เคย ban',seller:'shadow_pro',av:'SP',avC:1,verified:true,rating:4.7,sold:0,isNew:true},
-  {id:'l7',emoji:'⚽',title:'FIFA Online 4 — NXT Mbappe',game:'FIFA',cat:'item',server:'TH',price:1800,desc:'NXT Mbappe เกรด A ไม่มีโปรแกรมเสริม สภาพดี',seller:'gamevault',av:'GV',avC:3,verified:true,rating:4.8,sold:7},
-  {id:'l8',emoji:'🌟',title:'Honkai Star Rail — Acheron E2S1',game:'Honkai',cat:'account',server:'Asia',price:7200,desc:'Acheron E2S1 + Sparkle E0S1 + Robin E0 Trailblaze 65',seller:'dragonX99',av:'DX',avC:0,verified:true,rating:4.9,sold:0},
-];
+let st = { user:null, token:null, wallet:0, orders:[], gameF:'all', catF:'all' };
 
-let st = { user:null, wallet:0, orders:[], gameF:'all', catF:'all' };
+async function apiCall(path, opts={}) {
+  const headers = {'Content-Type':'application/json'};
+  if (st.token) headers['Authorization'] = 'Bearer ' + st.token;
+  const res = await fetch(API + path, {headers, ...opts});
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'เกิดข้อผิดพลาด');
+  return data;
+}
+
+async function loadListings() {
+  const g = document.getElementById('grid');
+  g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:40px;margin-bottom:12px">🔄</div><div style="font-size:15px;font-weight:700">กำลังโหลด...</div></div>';
+  try {
+    const q = document.getElementById('search-inp').value;
+    const sort = document.querySelector('.sort-sel').value;
+    const sortMap = {cheap:'price_asc',expensive:'price_desc',popular:'popular',newest:'newest'};
+    let url = `/listings?limit=20&sort=${sortMap[sort]||'newest'}`;
+    if (st.gameF !== 'all') url += `&game=${encodeURIComponent(st.gameF)}`;
+    if (st.catF !== 'all') url += `&category=${st.catF}`;
+    if (q) url += `&search=${encodeURIComponent(q)}`;
+    const data = await apiCall(url);
+    document.getElementById('cnt-badge').textContent = data.total + ' รายการ';
+    document.getElementById('stat-count').textContent = data.total + '+';
+    renderCards(data.listings);
+  } catch(e) {
+    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:40px;margin-bottom:12px">😿</div><div style="font-size:15px;font-weight:700">โหลดไม่ได้ กรุณารอสักครู่</div></div>';
+  }
+}
 
 function renderCards(items) {
-  document.getElementById('cnt-badge').textContent = items.length + ' รายการ';
   const g = document.getElementById('grid');
   if (!items.length) {
     g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:48px;margin-bottom:12px">🔍</div><div style="font-size:16px;font-weight:700">ไม่พบรายการที่ตรงกัน</div></div>';
@@ -770,28 +793,32 @@ function renderCards(items) {
   }
   g.innerHTML = items.map((l,i) => {
     const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
-    return `<div class="card" onclick="openDetail('${l.id}')" style="animation: fadeInDown 0.4s ease ${i*0.06}s both">
+    const avC = AV_COLORS[l.seller_username?.charCodeAt(0) % 4 || 0];
+    const av = (l.seller_avatar || l.seller_username || '??').slice(0,2).toUpperCase();
+    const isHot = l.sold > 50;
+    const isNew = new Date() - new Date(l.created_at) < 86400000 * 2;
+    return `<div class="card" onclick="openDetail('${l.id}')" style="animation:fadeInDown 0.4s ease ${i*0.06}s both">
       <div class="card-banner">
         <div class="banner-deco" style="background:${bg}"></div>
-        <span class="card-emoji">${l.emoji}</span>
-        ${l.isHot ? '<span class="card-badge badge-hot">🔥 HOT</span>' : l.isNew ? '<span class="card-badge badge-new">✨ ใหม่</span>' : ''}
+        <span class="card-emoji">${l.image_emoji||'🎮'}</span>
+        ${isHot?'<span class="card-badge badge-hot">🔥 HOT</span>':isNew?'<span class="card-badge badge-new">✨ ใหม่</span>':''}
         <span class="badge-escrow">🔒 Escrow</span>
       </div>
       <div class="card-body">
         <span class="game-tag">🎮 ${l.game}</span>
         <div class="card-title">${l.title}</div>
-        <div class="card-desc">${l.desc}</div>
+        <div class="card-desc">${l.description||''}</div>
         <div class="card-meta">
-          <span class="meta-chip">🖥️ ${l.server}</span>
-          ${l.sold > 0 ? `<span class="meta-chip">✅ ขาย ${l.sold}</span>` : ''}
+          <span class="meta-chip">🖥️ ${l.server||'TH'}</span>
+          ${l.sold>0?`<span class="meta-chip">✅ ขาย ${l.sold}</span>`:''}
         </div>
         <div class="card-footer">
-          <div><div class="price">฿${l.price.toLocaleString()}</div><div class="price-unit">บาท</div></div>
+          <div><div class="price">฿${Number(l.price).toLocaleString()}</div><div class="price-unit">บาท</div></div>
           <div class="seller-row">
-            <div class="seller-av" style="background:${AV_COLORS[l.avC]}">${l.av}</div>
+            <div class="seller-av" style="background:${avC}">${av}</div>
             <div>
-              <div class="seller-name">${l.seller}${l.verified?' ✓':''}</div>
-              <div class="stars">${'★'.repeat(Math.round(l.rating))} ${l.rating}</div>
+              <div class="seller-name">${l.seller_username||'ไม่ระบุ'}${l.seller_verified?' ✓':''}</div>
+              ${l.seller_rating>0?`<div class="stars">${'★'.repeat(Math.round(l.seller_rating))} ${l.seller_rating}</div>`:''}
             </div>
           </div>
         </div>
@@ -800,108 +827,123 @@ function renderCards(items) {
   }).join('');
 }
 
+let searchTimer;
 function applyFilters() {
-  const q = document.getElementById('search-inp').value.toLowerCase();
-  const sort = document.querySelector('.sort-sel').value;
-  let r = ITEMS.filter(l =>
-    (st.gameF==='all'||l.game===st.gameF) &&
-    (st.catF==='all'||l.cat===st.catF) &&
-    (!q||l.title.toLowerCase().includes(q)||l.game.toLowerCase().includes(q))
-  );
-  if (sort==='cheap') r.sort((a,b)=>a.price-b.price);
-  else if (sort==='expensive') r.sort((a,b)=>b.price-a.price);
-  else if (sort==='popular') r.sort((a,b)=>b.sold-a.sold);
-  renderCards(r);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(loadListings, 400);
 }
 
-function setGame(el,g) { document.querySelectorAll('[data-g]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.gameF=g; applyFilters(); }
-function setCat(el,c) { document.querySelectorAll('[data-c]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.catF=c; applyFilters(); }
+function setGame(el,g) { document.querySelectorAll('[data-g]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.gameF=g; loadListings(); }
+function setCat(el,c) { document.querySelectorAll('[data-c]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); st.catF=c; loadListings(); }
 
-function openDetail(id) {
-  const l = ITEMS.find(x=>x.id===id);
-  if (!l) return;
-  const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
-  document.getElementById('d-top-deco').style.background = bg;
-  document.getElementById('d-emoji').textContent = l.emoji;
-  document.getElementById('d-body').innerHTML = `
-    <div class="modal-title">${l.title}</div>
-    <div class="modal-game-tag"><span class="game-tag">🎮 ${l.game}</span></div>
-    <p class="modal-desc">${l.desc}</p>
-    <div class="info-grid">
-      <div class="info-cell"><div class="info-cell-label">🖥️ เซิร์ฟเวอร์</div><div class="info-cell-val">${l.server}</div></div>
-      <div class="info-cell"><div class="info-cell-label">📦 ประเภท</div><div class="info-cell-val">${l.cat==='account'?'บัญชีเกม':l.cat==='item'?'ไอเทม':'เงินในเกม'}</div></div>
-      <div class="info-cell"><div class="info-cell-label">✅ ขายแล้ว</div><div class="info-cell-val">${l.sold} รายการ</div></div>
-      <div class="info-cell"><div class="info-cell-label">⭐ Rating</div><div class="info-cell-val">${l.rating} / 5.0</div></div>
-    </div>
-    <div class="seller-box">
-      <div class="seller-av-lg" style="background:${AV_COLORS[l.avC]}">${l.av}</div>
-      <div>
-        <div style="font-size:15px;font-weight:800;color:var(--text)">${l.seller}${l.verified?' <span style="font-size:12px;color:#5A1ACA">✓ ยืนยันแล้ว</span>':''}</div>
-        <div style="font-size:13px;color:var(--text3);font-weight:600">ขายแล้ว ${l.sold}+ รายการ</div>
-        <div class="stars" style="font-size:14px">${'★'.repeat(Math.round(l.rating))} ${l.rating}</div>
-      </div>
-    </div>
-    <div class="escrow-box">
-      <div class="escrow-icon">🛡️</div>
-      <div class="escrow-text">เงินของคุณจะถูกล็อกไว้ที่ <strong>ระบบ Escrow ชายกลาง</strong> ก่อน — คนขายจะได้รับเงินก็ต่อเมื่อคุณกดยืนยันว่าได้รับของครบแล้วเท่านั้น!</div>
-    </div>
-    <div class="fee-box">
-      <div class="fee-row"><span>💵 ราคาสินค้า</span><span>฿${l.price.toLocaleString()}</span></div>
-      <div class="fee-row"><span>🎁 ค่าบริการ Escrow</span><span style="color:var(--mint2);font-weight:800">ฟรี!</span></div>
-      <div class="fee-row total"><span>รวมที่ต้องชำระ</span><span>฿${l.price.toLocaleString()}</span></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-buy" style="flex:1;font-size:15px;padding:13px;justify-content:center" onclick="handleBuy('${l.id}',${l.price},'${l.title.replace(/'/g,"\\'")}','${l.emoji}')">
-        🛒 ซื้อเลย ฿${l.price.toLocaleString()}
-      </button>
-    </div>`;
+async function openDetail(id) {
   openM('detail-m');
+  document.getElementById('d-body').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">กำลังโหลด...</div>';
+  try {
+    const l = await apiCall('/listings/' + id);
+    const bg = BANNER_COLORS[l.game] || BANNER_COLORS.default;
+    const avC = AV_COLORS[(l.seller_username||'').charCodeAt(0) % 4 || 0];
+    const av = (l.seller_avatar || l.seller_username || '??').slice(0,2).toUpperCase();
+    document.getElementById('d-top-deco').style.background = bg;
+    document.getElementById('d-emoji').textContent = l.image_emoji||'🎮';
+    document.getElementById('d-body').innerHTML = `
+      <div class="modal-title">${l.title}</div>
+      <div class="modal-game-tag"><span class="game-tag">🎮 ${l.game}</span></div>
+      <p class="modal-desc">${l.description||''}</p>
+      <div class="info-grid">
+        <div class="info-cell"><div class="info-cell-label">🖥️ เซิร์ฟเวอร์</div><div class="info-cell-val">${l.server||'TH'}</div></div>
+        <div class="info-cell"><div class="info-cell-label">📦 ประเภท</div><div class="info-cell-val">${l.category==='account'?'บัญชีเกม':l.category==='item'?'ไอเทม':'เงินในเกม'}</div></div>
+        <div class="info-cell"><div class="info-cell-label">✅ ขายแล้ว</div><div class="info-cell-val">${l.sold||0} รายการ</div></div>
+        <div class="info-cell"><div class="info-cell-label">⭐ Rating</div><div class="info-cell-val">${l.seller_rating||'-'} / 5.0</div></div>
+      </div>
+      <div class="seller-box">
+        <div class="seller-av-lg" style="background:${avC}">${av}</div>
+        <div>
+          <div style="font-size:15px;font-weight:800;color:var(--text)">${l.seller_username||'ไม่ระบุ'}${l.seller_verified?' <span style="font-size:12px;color:#5A1ACA">✓ ยืนยันแล้ว</span>':''}</div>
+          <div style="font-size:13px;color:var(--text3);font-weight:600">ขายแล้ว ${l.seller_total_sales||0}+ รายการ</div>
+        </div>
+      </div>
+      <div class="escrow-box">
+        <div class="escrow-icon">🛡️</div>
+        <div class="escrow-text">เงินของคุณจะถูกล็อกไว้ที่ <strong>ระบบ Escrow ชายกลาง</strong> ก่อน — คนขายได้รับเงินก็ต่อเมื่อคุณกดยืนยันรับของครบแล้ว!</div>
+      </div>
+      <div class="fee-box">
+        <div class="fee-row"><span>💵 ราคาสินค้า</span><span>฿${Number(l.price).toLocaleString()}</span></div>
+        <div class="fee-row"><span>🎁 ค่าบริการ Escrow</span><span style="color:var(--mint2);font-weight:800">ฟรี!</span></div>
+        <div class="fee-row total"><span>รวมที่ต้องชำระ</span><span>฿${Number(l.price).toLocaleString()}</span></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-buy" style="flex:1;font-size:15px;padding:13px;justify-content:center" onclick="handleBuy('${l.id}',${l.price},'${l.title.replace(/'/g,"\\'")}','${l.image_emoji||"🎮"}')">
+          🛒 ซื้อเลย ฿${Number(l.price).toLocaleString()}
+        </button>
+      </div>`;
+  } catch(e) {
+    document.getElementById('d-body').innerHTML = `<p style="color:var(--coral2);padding:20px">เกิดข้อผิดพลาด: ${e.message}</p>`;
+  }
 }
 
-function handleBuy(id,price,title,emoji) {
+async function handleBuy(id,price,title,emoji) {
   if (!st.user) { closeM('detail-m'); toast('กรุณาเข้าสู่ระบบก่อนซื้อนะ~ 🐾','i'); openM('login-m'); return; }
   if (st.wallet < price) { closeM('detail-m'); toast('กระเป๋าเงินไม่พอ ต้องเติมเงินก่อนนะ! 💰','e'); openM('topup-m'); return; }
-  st.wallet -= price;
-  const oid = 'TXN-' + Math.floor(Math.random()*9000+1000);
-  st.orders.push({ id:oid, title, price, emoji, status:1, created: new Date() });
-  updateWallet();
-  closeM('detail-m');
-  toast('✅ ล็อกเงินใน Escrow แล้ว! ออเดอร์ ' + oid, 's');
-  setTimeout(()=>showEscrow(oid), 700);
+  try {
+    const order = await apiCall('/orders', {method:'POST', body:JSON.stringify({listing_id:id})});
+    st.wallet -= price;
+    updateWallet();
+    closeM('detail-m');
+    toast('✅ ล็อกเงินใน Escrow แล้ว! ออเดอร์ ' + order.id.slice(0,8), 's');
+    setTimeout(()=>showEscrow(order.id), 700);
+  } catch(e) {
+    toast('เกิดข้อผิดพลาด: ' + e.message, 'e');
+  }
 }
 
-function showEscrow(oid) {
-  const o = st.orders.find(x=>x.id===oid);
-  if (!o) return;
-  const steps = [
-    {label:'โอนเงินเข้า Escrow แล้ว 🎉',sub:`฿${o.price.toLocaleString()} ล็อกปลอดภัย`,done:true},
-    {label:'รอคนขายส่งข้อมูล',sub:'คนขายได้รับแจ้งเตือนแล้ว',active:o.status===1},
-    {label:'ตรวจสอบและยืนยันรับของ',sub:'ภายใน 48 ชั่วโมง',active:o.status===2},
-    {label:'โอนเงินให้คนขาย ✨',sub:'เสร็จสิ้นธุรกรรม',active:o.status===3},
-  ];
-  document.getElementById('escrow-body').innerHTML = `
-    <div class="modal-title">ออเดอร์ ${o.id} ${o.emoji}</div>
-    <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:14px">${o.title}</p>
-    <div class="escrow-steps">
-      ${steps.map((s,i)=>`<div class="estep ${s.done?'estep-done':s.active?'estep-active':'estep-wait'}">
-        <div class="estep-circle">${s.done?'✓':i+1}</div>
-        <div><div class="estep-title">${s.label}</div><div class="estep-sub">${s.sub}</div></div>
-      </div>`).join('')}
-    </div>
-    ${o.status===1?`<div class="modal-actions"><button class="btn btn-buy" style="flex:1;justify-content:center;padding:11px" onclick="advStep('${oid}',2)">📩 จำลอง: คนขายส่งข้อมูลแล้ว</button></div>`:
-    o.status===2?`<div class="modal-actions"><button class="btn btn-buy" style="flex:1;justify-content:center;padding:11px" onclick="advStep('${oid}',3)">✅ ยืนยันรับของแล้ว!</button><button class="btn btn-danger" style="padding:11px 16px" onclick="advStep('${oid}','d')">🚨 แจ้งปัญหา</button></div>`:
-    o.status===3?`<div style="background:linear-gradient(135deg,var(--mint),#A8F0D4);border-radius:16px;padding:16px;text-align:center;font-size:15px;font-weight:800;color:#1A5A3A">🎉 ธุรกรรมสำเร็จ! เงินโอนให้คนขายแล้ว</div>`:
-    `<div style="background:var(--lemon);border-radius:16px;padding:16px;text-align:center;font-size:14px;font-weight:700;color:#7A5500">🔍 Dispute เปิดแล้ว — ทีม Admin กำลังตรวจสอบ</div>`}`;
+async function showEscrow(oid) {
   openM('escrow-m');
+  try {
+    const o = await apiCall('/orders/' + oid);
+    const statusMap = {escrow_locked:1, seller_sent:2, completed:3, disputed:'d'};
+    const statusNum = statusMap[o.status] || 1;
+    const steps = [
+      {label:'โอนเงินเข้า Escrow แล้ว 🎉', sub:`฿${Number(o.amount).toLocaleString()} ล็อกปลอดภัย`, done:true},
+      {label:'รอคนขายส่งข้อมูล', sub:'คนขายได้รับแจ้งเตือนแล้ว', active:statusNum===1},
+      {label:'ตรวจสอบและยืนยันรับของ', sub:'ภายใน 48 ชั่วโมง', active:statusNum===2},
+      {label:'โอนเงินให้คนขาย ✨', sub:'เสร็จสิ้นธุรกรรม', active:statusNum===3},
+    ];
+    document.getElementById('escrow-body').innerHTML = `
+      <div class="modal-title">ออเดอร์ ${oid.slice(0,8)}... ${o.listing_image_emoji||'🎮'}</div>
+      <p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:14px">${o.listing_title||'รายการสินค้า'}</p>
+      <div class="escrow-steps">
+        ${steps.map((s,i)=>`<div class="estep ${s.done?'estep-done':s.active?'estep-active':'estep-wait'}">
+          <div class="estep-circle">${s.done?'✓':i+1}</div>
+          <div><div class="estep-title">${s.label}</div><div class="estep-sub">${s.sub}</div></div>
+        </div>`).join('')}
+      </div>
+      ${statusNum===2?`<div class="modal-actions">
+        <button class="btn btn-buy" style="flex:1;justify-content:center;padding:11px" onclick="confirmOrder('${oid}')">✅ ยืนยันรับของแล้ว!</button>
+        <button class="btn btn-danger" style="padding:11px 16px" onclick="disputeOrder('${oid}')">🚨 แจ้งปัญหา</button>
+      </div>`:
+      statusNum===3?`<div style="background:linear-gradient(135deg,var(--mint),#A8F0D4);border-radius:16px;padding:16px;text-align:center;font-size:15px;font-weight:800;color:#1A5A3A">🎉 ธุรกรรมสำเร็จ! เงินโอนให้คนขายแล้ว</div>`:
+      statusNum==='d'?`<div style="background:var(--lemon);border-radius:16px;padding:16px;text-align:center;font-size:14px;font-weight:700;color:#7A5500">🔍 Dispute เปิดแล้ว — ทีม Admin กำลังตรวจสอบ</div>`:
+      `<div style="background:var(--lavender);border-radius:16px;padding:12px;text-align:center;font-size:13px;color:var(--text2)">รอคนขายส่งข้อมูล...</div>`}`;
+  } catch(e) {
+    document.getElementById('escrow-body').innerHTML = `<p style="color:var(--coral2);padding:20px">เกิดข้อผิดพลาด: ${e.message}</p>`;
+  }
 }
 
-function advStep(oid,next) {
-  const o = st.orders.find(x=>x.id===oid);
-  if (!o) return;
-  if (next==='d') { o.status='d'; toast('เปิด Dispute แล้ว ทีม Admin จะติดต่อ','i'); }
-  else if (next===2) { o.status=2; toast('📩 คนขายส่งข้อมูลแล้ว! ตรวจสอบด่วน~','s'); }
-  else if (next===3) { o.status=3; st.wallet+=Math.round(o.price*0.97); updateWallet(); toast('🎉 ธุรกรรมสำเร็จ! เงินส่วนต่าง cashback กลับมานะ~','s'); }
-  showEscrow(oid);
+async function confirmOrder(oid) {
+  try {
+    await apiCall('/orders/'+oid+'/confirm', {method:'PATCH'});
+    toast('🎉 ยืนยันสำเร็จ! ธุรกรรมเสร็จสมบูรณ์','s');
+    showEscrow(oid);
+  } catch(e) { toast(e.message,'e'); }
+}
+
+async function disputeOrder(oid) {
+  try {
+    await apiCall('/orders/'+oid+'/dispute', {method:'PATCH', body:JSON.stringify({reason:'ไม่ได้รับสินค้า'})});
+    toast('เปิด Dispute แล้ว ทีม Admin จะติดต่อกลับ','i');
+    showEscrow(oid);
+  } catch(e) { toast(e.message,'e'); }
 }
 
 function showPage(p,el) {
@@ -913,7 +955,7 @@ function showPage(p,el) {
   if (p==='sell' && !st.user) { setTimeout(()=>openM('login-m'),300); }
 }
 
-function renderOrders() {
+async function renderOrders() {
   const el = document.getElementById('orders-list');
   if (!st.user) {
     el.innerHTML = `<div style="text-align:center;padding:60px 20px">
@@ -921,57 +963,80 @@ function renderOrders() {
       <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px">กรุณาเข้าสู่ระบบก่อน</div>
       <button class="btn btn-primary" style="margin-top:8px" onclick="openM('login-m')">🌟 เข้าสู่ระบบ</button></div>`; return;
   }
-  if (!st.orders.length) {
-    el.innerHTML = `<div style="text-align:center;padding:60px 20px"><div style="font-size:60px;margin-bottom:12px">📋</div><div style="font-size:18px;font-weight:800;color:var(--text)">ยังไม่มีคำสั่งซื้อ</div><p style="color:var(--text3);margin-top:8px">ลองไปช้อปปิ้งในตลาดก่อนนะ~</p></div>`; return;
+  el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">กำลังโหลด...</div>';
+  try {
+    const orders = await apiCall('/orders/my');
+    if (!orders.length) {
+      el.innerHTML = `<div style="text-align:center;padding:60px 20px"><div style="font-size:60px;margin-bottom:12px">📋</div><div style="font-size:18px;font-weight:800;color:var(--text)">ยังไม่มีคำสั่งซื้อ</div><p style="color:var(--text3);margin-top:8px">ลองไปช้อปปิ้งในตลาดก่อนนะ~</p></div>`; return;
+    }
+    const label = {escrow_locked:'กำลังดำเนินการ',seller_sent:'รอยืนยัน',completed:'สำเร็จ',disputed:'Dispute'};
+    const bg = {escrow_locked:'#E4D6FF',seller_sent:'#FFF3A3',completed:'#B8F5E0',disputed:'#FFD6C8'};
+    const tc = {escrow_locked:'#5A1ACA',seller_sent:'#7A5500',completed:'#1A5A3A',disputed:'#8C1A1A'};
+    el.innerHTML = orders.map(o=>`
+      <div class="order-card" onclick="showEscrow('${o.id}')">
+        <div class="order-emoji">${o.image_emoji||'🎮'}</div>
+        <div class="order-info">
+          <div class="order-title">${o.listing_title||'รายการสินค้า'}</div>
+          <div class="order-id">${o.id.slice(0,8)}...</div>
+        </div>
+        <div class="order-right">
+          <div class="order-price">฿${Number(o.amount).toLocaleString()}</div>
+          <div class="status-pill" style="background:${bg[o.status]||'#E4D6FF'};color:${tc[o.status]||'#5A1ACA'}">${label[o.status]||o.status}</div>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = `<p style="color:var(--coral2);padding:20px">เกิดข้อผิดพลาด: ${e.message}</p>`;
   }
-  const label = {1:'กำลังดำเนินการ',2:'รอยืนยัน',3:'สำเร็จ',d:'Dispute'};
-  const bg = {1:'#E4D6FF',2:'#FFF3A3',3:'#B8F5E0',d:'#FFD6C8'};
-  const tc = {1:'#5A1ACA',2:'#7A5500',3:'#1A5A3A',d:'#8C1A1A'};
-  el.innerHTML = st.orders.map(o=>`
-    <div class="order-card" onclick="showEscrow('${o.id}')">
-      <div class="order-emoji">${o.emoji}</div>
-      <div class="order-info">
-        <div class="order-title">${o.title}</div>
-        <div class="order-id">${o.id}</div>
-      </div>
-      <div class="order-right">
-        <div class="order-price">฿${o.price.toLocaleString()}</div>
-        <div class="status-pill" style="background:${bg[o.status]};color:${tc[o.status]}">${label[o.status]}</div>
-      </div>
-    </div>`).join('');
 }
 
-function doLogin() {
+async function doLogin() {
   const e = document.getElementById('l-email').value;
   const p = document.getElementById('l-pw').value;
   document.getElementById('l-err').textContent = '';
-  if (!e||!p) { document.getElementById('l-err').textContent = 'กรุณากรอกข้อมูลให้ครบนะ~'; return; }
-  st.user = { username: e==='dragon@test.com' ? 'dragonX99' : e.split('@')[0], avatar: e.slice(0,2).toUpperCase() };
-  st.wallet = e==='dragon@test.com' ? 5000 : 1000;
-  updateNavUser();
-  closeM('login-m');
-  toast(`ยินดีต้อนรับ ${st.user.username}! 🎉`,'s');
+  if (!e||!p) { document.getElementById('l-err').textContent = 'กรุณากรอกข้อมูลให้ครบนะ~'; return;  }
+  try {
+    const data = await apiCall('/auth/login', {method:'POST', body:JSON.stringify({email:e,password:p})});
+    st.user = data.user;
+    st.token = data.token;
+    st.wallet = Number(data.user.wallet);
+    updateNavUser();
+    closeM('login-m');
+    toast(`ยินดีต้อนรับ ${data.user.username}! 🎉`,'s');
+  } catch(err) {
+    document.getElementById('l-err').textContent = err.message;
+  }
 }
 
-function doRegister() {
+async function doRegister() {
   const n=document.getElementById('r-name').value, e=document.getElementById('r-email').value, p=document.getElementById('r-pw').value;
   document.getElementById('r-err').textContent='';
   if (!n||!e||!p) { document.getElementById('r-err').textContent='กรุณากรอกข้อมูลให้ครบนะ~'; return; }
   if (p.length<8) { document.getElementById('r-err').textContent='รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'; return; }
-  st.user = { username:n, avatar:n.slice(0,2).toUpperCase() };
-  st.wallet = 0;
-  updateNavUser();
-  closeM('reg-m');
-  toast(`ยินดีต้อนรับสู่ชายกลาง ${n}! ✨`,'s');
+  try {
+    const data = await apiCall('/auth/register', {method:'POST', body:JSON.stringify({username:n,email:e,password:p})});
+    st.user = data.user;
+    st.token = data.token;
+    st.wallet = 0;
+    updateNavUser();
+    closeM('reg-m');
+    toast(`ยินดีต้อนรับสู่ชายกลาง ${n}! ✨`,'s');
+  } catch(err) {
+    document.getElementById('r-err').textContent = err.message;
+  }
 }
 
-function doTopup() {
+async function doTopup() {
   const a = Number(document.getElementById('topup-inp').value);
   if (!a||a<50) { toast('จำนวนเงินขั้นต่ำ 50 บาทนะ! 💰','e'); return; }
-  st.wallet += a;
-  updateWallet();
-  closeM('topup-m');
-  toast(`เติมเงิน ฿${a.toLocaleString()} สำเร็จ! 🎉`,'s');
+  try {
+    const data = await apiCall('/wallet/topup', {method:'POST', body:JSON.stringify({amount:a})});
+    st.wallet = data.balance;
+    updateWallet();
+    closeM('topup-m');
+    toast(`เติมเงิน ฿${a.toLocaleString()} สำเร็จ! 🎉`,'s');
+  } catch(err) {
+    toast('เกิดข้อผิดพลาด: ' + err.message,'e');
+  }
 }
 
 function setTopup(a) { document.getElementById('topup-inp').value=a; }
@@ -979,12 +1044,12 @@ function setTopup(a) { document.getElementById('topup-inp').value=a; }
 function updateNavUser() {
   document.getElementById('nav-right').innerHTML=`
     <div class="wallet-pill" onclick="openM('topup-m')">💰 ฿<span id="wb">${st.wallet.toLocaleString()}</span></div>
-    <div class="user-av" title="${st.user.username}">${st.user.avatar}</div>
+    <div class="user-av" title="${st.user.username}">${(st.user.avatar||st.user.username||'U').slice(0,2).toUpperCase()}</div>
     <button class="btn btn-outline" onclick="doLogout()" style="font-size:13px;padding:7px 14px">ออก</button>`;
 }
 function updateWallet() { const el=document.getElementById('wb'); if(el) el.textContent=st.wallet.toLocaleString(); }
 function doLogout() {
-  st.user=null; st.wallet=0; st.orders=[];
+  st.user=null; st.token=null; st.wallet=0;
   document.getElementById('nav-right').innerHTML=`<button class="btn btn-outline" onclick="openM('login-m')">เข้าสู่ระบบ</button><button class="btn btn-primary" onclick="openM('reg-m')">✨ สมัครฟรี!</button>`;
   toast('ออกจากระบบแล้ว~ 👋','i');
 }
@@ -1012,7 +1077,7 @@ function mascotTalk() {
   setTimeout(()=>{ b.style.display='none'; bubbleShown=false; }, 3500);
 }
 
-renderCards(ITEMS);
+loadListings();
 </script>
 </body>
 </html>
