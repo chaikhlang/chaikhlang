@@ -426,7 +426,14 @@ nav {
 .toast.i { border-left-color: var(--lavender2); }
 @keyframes toastIn { from { transform: translateX(60px) scale(0.8); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
 
-@keyframes fadeInDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.emoji-pick {
+  width: 42px; height: 42px; border-radius: 12px; border: 2px solid var(--lavender);
+  background: #F7F3FF; font-size: 20px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.emoji-pick:hover { transform: scale(1.15); border-color: var(--lavender2); }
+.active-emoji { border-color: var(--lavender2); background: var(--lavender); box-shadow: 0 4px 12px var(--shadow2); transform: scale(1.1); }
+textarea.form-input { font-family: 'Sarabun', sans-serif; }
 </style>
 </head>
 <body>
@@ -514,7 +521,7 @@ nav {
 <section class="hero">
   <div class="hero-badge">🔒 ระบบ Escrow ปกป้องทุกธุรกรรม — ปลอดภัย 100%</div>
   <h1>ซื้อขายไอเทมเกม<br>ง่าย ปลอดภัย น่ารัก~</h1>
-  <p>ตลาดกลางสำหรับเกมเมอร์ไทย🛡️</p>
+  <p>ตลาดกลางสำหรับเกมเมอร์ไทย เงินจะถึงมือคนขายก็ต่อเมื่อคุณกดยืนยันรับของแล้วเท่านั้น 🛡️</p>
   <div class="hero-btns">
     <button class="btn btn-primary" style="font-size:16px;padding:12px 28px" onclick="document.getElementById('search-inp').focus()">🛒 เริ่มช้อปเลย!</button>
     <button class="btn btn-outline" style="font-size:16px;padding:12px 28px" onclick="openM('reg-m')">🌟 สมัครขายฟรี</button>
@@ -642,11 +649,138 @@ nav {
 
 <!-- PAGE: SELL -->
 <div id="page-sell" style="display:none;padding:32px 40px 80px;position:relative;z-index:1">
-  <div class="sell-hero">
+  <!-- ถ้ายังไม่ login -->
+  <div id="sell-login-prompt" class="sell-hero">
     <div class="big-emoji">📦</div>
     <h2 style="font-family:'Prompt',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin-bottom:8px">ขายไอเทมของคุณ</h2>
     <p style="color:var(--text2);font-size:16px;margin-bottom:24px">เข้าสู่ระบบเพื่อลงขาย ฟรี ไม่มีค่าใช้จ่าย เงินปลอดภัยกับระบบ Escrow</p>
     <button class="btn btn-primary" style="font-size:16px;padding:12px 32px" onclick="openM('login-m')">🌟 เข้าสู่ระบบเพื่อขาย</button>
+  </div>
+  <!-- ฟอร์มลงขาย (แสดงเมื่อ login แล้ว) -->
+  <div id="sell-form-wrap" style="display:none;max-width:640px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:48px;margin-bottom:8px;animation:charBounce 2s ease-in-out infinite;display:inline-block">🏪</div>
+      <h2 style="font-family:'Prompt',sans-serif;font-size:26px;font-weight:800;color:var(--text)">ลงขายไอเทม</h2>
+      <p style="color:var(--text2);font-size:14px;margin-top:4px">ฟรี ไม่มีค่าลงขาย เงินปลอดภัยกับระบบ Escrow 🛡️</p>
+    </div>
+
+    <div style="background:white;border-radius:28px;padding:28px;box-shadow:0 8px 24px var(--shadow)">
+
+      <!-- Emoji picker -->
+      <div class="form-group">
+        <label class="form-label">🎨 Emoji ไอเทม (กดเพื่อเลือก)</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <button type="button" class="emoji-pick active-emoji" onclick="pickEmoji(this,'⚔️')">⚔️</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🎮')">🎮</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'💰')">💰</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🔫')">🔫</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🔪')">🔪</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'⚡')">⚡</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🌟')">🌟</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'⚽')">⚽</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🏆')">🏆</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'💎')">💎</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🧪')">🧪</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🐉')">🐉</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🦋')">🦋</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🎯')">🎯</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'🪄')">🪄</button>
+          <button type="button" class="emoji-pick" onclick="pickEmoji(this,'👑')">👑</button>
+        </div>
+        <input type="hidden" id="sell-emoji" value="⚔️">
+      </div>
+
+      <!-- ชื่อสินค้า -->
+      <div class="form-group">
+        <label class="form-label">📝 ชื่อสินค้า *</label>
+        <input class="form-input" id="sell-title" placeholder="เช่น Dark Sword +15 Full Enchant, บัญชี ROV Diamond III" oninput="updatePreview()">
+      </div>
+
+      <!-- เกม + ประเภท -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">🎮 เกม *</label>
+          <select class="form-input" id="sell-game">
+            <option value="">เลือกเกม...</option>
+            <option>Ragnarok Origin</option>
+            <option>Ragnarok M</option>
+            <option>ROV</option>
+            <option>Genshin Impact</option>
+            <option>PUBG Mobile</option>
+            <option>Valorant</option>
+            <option>FIFA Online 4</option>
+            <option>Honkai Star Rail</option>
+            <option>Free Fire</option>
+            <option>Mobile Legends</option>
+            <option>Arena of Valor</option>
+            <option>อื่นๆ</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📦 ประเภท *</label>
+          <select class="form-input" id="sell-category">
+            <option value="item">🗡️ ไอเทม/อาวุธ</option>
+            <option value="account">👤 บัญชีเกม</option>
+            <option value="currency">💰 เงินในเกม</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ราคา + จำนวน -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">💵 ราคา (บาท) *</label>
+          <input class="form-input" type="number" id="sell-price" placeholder="เช่น 850" min="1" oninput="updatePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📊 จำนวน *</label>
+          <input class="form-input" type="number" id="sell-stock" placeholder="เช่น 1" min="1" value="1">
+        </div>
+      </div>
+
+      <!-- เซิร์ฟเวอร์ + วิธีส่ง -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">🖥️ เซิร์ฟเวอร์</label>
+          <input class="form-input" id="sell-server" placeholder="เช่น Asia01, TH, SEA" oninput="updatePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📨 วิธีส่ง *</label>
+          <select class="form-input" id="sell-delivery">
+            <option value="in_game_trade">🎮 แลกในเกม</option>
+            <option value="account_details">📩 ส่ง ID/Password</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- รายละเอียด -->
+      <div class="form-group">
+        <label class="form-label">📄 รายละเอียดสินค้า *</label>
+        <textarea class="form-input" id="sell-desc" rows="4" placeholder="อธิบายสินค้าให้ละเอียด เช่น stats, rank, สกิน, เงื่อนไขการส่ง..." style="resize:vertical;min-height:100px"></textarea>
+      </div>
+
+      <!-- Preview card -->
+      <div style="background:var(--lavender);border-radius:16px;padding:14px 16px;margin-bottom:20px">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px">👁️ Preview การ์ดของคุณ</div>
+        <div style="display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:12px">
+          <div style="font-size:32px" id="preview-emoji">⚔️</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--text)" id="preview-title">ชื่อสินค้าของคุณ</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px" id="preview-game">เกม | เซิร์ฟเวอร์</div>
+          </div>
+          <div style="font-family:'Prompt',sans-serif;font-size:18px;font-weight:800;color:#5A1ACA" id="preview-price">฿0</div>
+        </div>
+      </div>
+
+      <div id="sell-err" style="color:var(--coral2);font-size:13px;font-weight:700;margin-bottom:10px;text-align:center"></div>
+      <div id="sell-success" style="display:none;background:var(--mint);border-radius:16px;padding:14px;text-align:center;font-size:14px;font-weight:700;color:#1A5A3A;margin-bottom:14px">
+        🎉 ลงขายสำเร็จแล้ว! สินค้าของคุณปรากฏในตลาดแล้ว
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;font-size:16px;padding:14px;justify-content:center" onclick="doCreateListing()">
+        🚀 ลงขายเลย!
+      </button>
+    </div>
   </div>
 </div>
 
@@ -736,7 +870,7 @@ nav {
 <div class="toasts" id="toasts"></div>
 
 <script>
-const API = 'https://chaikhlang.onrender.com/api';
+const API = 'https://chaikhlang-api.onrender.com/api';
 const BANNER_COLORS = {
   'Ragnarok Origin':'linear-gradient(135deg,#FFD6C8,#FFB09A)',
   'Ragnarok M':'linear-gradient(135deg,#FFD6C8,#FFB09A)',
@@ -952,7 +1086,83 @@ function showPage(p,el) {
   document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   if (p==='orders') renderOrders();
-  if (p==='sell' && !st.user) { setTimeout(()=>openM('login-m'),300); }
+  if (p==='sell') renderSellPage();
+}
+
+function renderSellPage() {
+  const prompt = document.getElementById('sell-login-prompt');
+  const form = document.getElementById('sell-form-wrap');
+  if (!st.user) {
+    prompt.style.display = 'block';
+    form.style.display = 'none';
+  } else {
+    prompt.style.display = 'none';
+    form.style.display = 'block';
+  }
+}
+
+function pickEmoji(el, emoji) {
+  document.querySelectorAll('.emoji-pick').forEach(b => b.classList.remove('active-emoji'));
+  el.classList.add('active-emoji');
+  document.getElementById('sell-emoji').value = emoji;
+  document.getElementById('preview-emoji').textContent = emoji;
+}
+
+function updatePreview() {
+  const title = document.getElementById('sell-title').value || 'ชื่อสินค้าของคุณ';
+  const game = document.getElementById('sell-game').value || 'เกม';
+  const server = document.getElementById('sell-server').value || 'เซิร์ฟเวอร์';
+  const price = document.getElementById('sell-price').value || '0';
+  document.getElementById('preview-title').textContent = title;
+  document.getElementById('preview-game').textContent = game + ' | ' + server;
+  document.getElementById('preview-price').textContent = '฿' + Number(price).toLocaleString();
+}
+
+async function doCreateListing() {
+  const title = document.getElementById('sell-title').value.trim();
+  const game = document.getElementById('sell-game').value;
+  const category = document.getElementById('sell-category').value;
+  const price = document.getElementById('sell-price').value;
+  const stock = document.getElementById('sell-stock').value;
+  const server = document.getElementById('sell-server').value.trim() || 'TH';
+  const delivery = document.getElementById('sell-delivery').value;
+  const desc = document.getElementById('sell-desc').value.trim();
+  const emoji = document.getElementById('sell-emoji').value;
+  const errEl = document.getElementById('sell-err');
+  const successEl = document.getElementById('sell-success');
+
+  errEl.textContent = '';
+  successEl.style.display = 'none';
+
+  if (!title) { errEl.textContent = 'กรุณากรอกชื่อสินค้า'; return; }
+  if (!game) { errEl.textContent = 'กรุณาเลือกเกม'; return; }
+  if (!price || Number(price) < 1) { errEl.textContent = 'กรุณากรอกราคา'; return; }
+  if (!desc) { errEl.textContent = 'กรุณากรอกรายละเอียดสินค้า'; return; }
+
+  try {
+    await apiCall('/listings', {
+      method: 'POST',
+      body: JSON.stringify({
+        title, game, category, price: Number(price),
+        stock: Number(stock) || 1, server, delivery_method: delivery,
+        description: desc, image_emoji: emoji
+      })
+    });
+    successEl.style.display = 'block';
+    toast('🎉 ลงขายสำเร็จแล้ว! สินค้าปรากฏในตลาดแล้ว', 's');
+    // reset form
+    document.getElementById('sell-title').value = '';
+    document.getElementById('sell-price').value = '';
+    document.getElementById('sell-stock').value = '1';
+    document.getElementById('sell-server').value = '';
+    document.getElementById('sell-desc').value = '';
+    document.getElementById('sell-game').value = '';
+    document.getElementById('preview-title').textContent = 'ชื่อสินค้าของคุณ';
+    document.getElementById('preview-price').textContent = '฿0';
+    document.getElementById('preview-game').textContent = 'เกม | เซิร์ฟเวอร์';
+  } catch(e) {
+    errEl.textContent = 'เกิดข้อผิดพลาด: ' + e.message;
+  }
 }
 
 async function renderOrders() {
@@ -1002,6 +1212,7 @@ async function doLogin() {
     updateNavUser();
     closeM('login-m');
     toast(`ยินดีต้อนรับ ${data.user.username}! 🎉`,'s');
+    renderSellPage();
   } catch(err) {
     document.getElementById('l-err').textContent = err.message;
   }
@@ -1020,6 +1231,7 @@ async function doRegister() {
     updateNavUser();
     closeM('reg-m');
     toast(`ยินดีต้อนรับสู่ชายกลาง ${n}! ✨`,'s');
+    renderSellPage();
   } catch(err) {
     document.getElementById('r-err').textContent = err.message;
   }
