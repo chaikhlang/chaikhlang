@@ -50,7 +50,6 @@ app.get('/api/health', (req, res) => {
 // 404
 app.use('/api/*', (req, res) => res.status(404).json({ error: 'ไม่พบ endpoint นี้' }));
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
